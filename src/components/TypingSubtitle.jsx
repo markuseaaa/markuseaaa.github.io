@@ -1,7 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export default function TypingSubtitle({
-  items = ["Multimediedesigner", "Frontend-udvikler", "Interaktive oplevelser"],
+  items = [
+    "Multimediedesigner",
+    "Grafisk designer",
+    "Webdesigner",
+    "UX/UI designer",
+    "Frontend-udvikler",
+    "Videoredigerer",
+  ],
   typingSpeed = 55,
   deletingSpeed = 35,
   startPause = 300,

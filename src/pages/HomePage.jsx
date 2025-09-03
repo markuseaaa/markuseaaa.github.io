@@ -9,14 +9,7 @@ export default function HomePage() {
       <section className="heroFull">
         <div className="heroCenter">
           <h1 className="title">Markus Kristensen</h1>
-          <TypingSubtitle
-            items={[
-              "Multimediedesigner",
-              "Frontend-udvikler",
-              "Interaktive oplevelser",
-              "UX • Motion • React",
-            ]}
-          />
+          <TypingSubtitle />
           <div
             className="scrollArrow"
             onClick={() =>

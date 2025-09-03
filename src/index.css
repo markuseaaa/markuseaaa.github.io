@@ -107,7 +107,7 @@ body {
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: saturate(120%) blur(22px);
+  backdrop-filter: saturate(135%) blur(30px);
   padding: 32px;
 }
 .glass::before {
@@ -205,30 +205,50 @@ body {
 /* NAVBAR */
 .navbar {
   position: fixed;
-  width: 100%;
-  justify-content: center;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0; /* sidder øverst */
+  left: 0; /* starter i venstre */
+  width: 100%; /* fylder hele bredden */
+
   display: flex;
-  gap: 100px;
-  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 32px;
+
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: saturate(120%) blur(22px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: saturate(135%) blur(30px);
+
   z-index: 10;
 }
+.navCenter {
+  position: absolute;
+  left: 48%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px;
+}
+/* Logo */
+.navLogo .logoImg {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+/* Links */
 .navlink {
   color: var(--txt);
   text-decoration: none;
   font-weight: 300;
   transition: opacity 0.2s ease;
   font-size: 1.2rem;
+  margin-left: 20px; /* spacing mellem links */
 }
+
 .navlink.active {
   font-weight: 500;
 }
+
 .navlink:hover {
-  opacity: 0.85;
+  font-weight: 500;
 }
 
 /* PILLS */
@@ -238,7 +258,6 @@ body {
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(16px);
   font-size: 1rem;
   color: var(--txt);

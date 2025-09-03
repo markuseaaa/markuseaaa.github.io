@@ -12,7 +12,7 @@ export default function App() {
       <main className="container">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/ommig" element={<About />} />
           <Route path="/projekter" element={<Projects />} />
           <Route path="/kontakt" element={<Contact />} />
         </Routes>
