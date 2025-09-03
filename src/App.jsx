@@ -1,15 +1,16 @@
 import { Routes, Route } from "react-router";
-import Navbar from "./components/Navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import About from "./pages/About.jsx";
 import Projects from "./pages/Projects.jsx";
 import Contact from "./pages/Contact.jsx";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 export default function App() {
   return (
     <div className="page">
-      <Navbar />
       <main className="container">
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/ommig" element={<About />} />
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/kontakt" element={<Contact />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   );
 }
