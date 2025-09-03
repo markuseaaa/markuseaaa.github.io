@@ -1,68 +1,265 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --bg: #121212;
+  --txt: #fff;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+html,
+body,
+#root {
+  height: 100%;
 }
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* BACKGROUND IMAGE */
+.page {
+  position: relative;
+  overflow-x: clip;
+  background-image: url("assets/baggrund.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+  background-attachment: scroll;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 120px 24px 96px;
   display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.center {
+  text-align: center;
+}
+.title {
+  font-weight: 900;
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  margin-bottom: 0;
+}
+.subtitle {
+  opacity: 0.92;
+  font-size: clamp(1rem, 2.5vw, 1.375rem);
+  margin-top: 0.25rem;
+}
+.h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem;
+}
+.muted {
+  opacity: 0.9;
+}
+
+/* HERO */
+.hero {
+  display: grid;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
+}
+.heroInner {
+  display: grid;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 1020px;
+  margin-top: 30px;
+}
+.ctaRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tags li {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.85rem;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* GLASS */
+.glass {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: saturate(120%) blur(22px);
+  padding: 32px;
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.06)
+  );
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+/* GRID & TILES */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  transition: transform 0.3s ease;
+}
+.tile:hover {
+  transform: translateY(-4px);
+}
+.thumb {
+  height: 112px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.08)
+  );
+}
+.tileCaption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.shine {
+  position: absolute;
+  inset: -1px;
+  border-radius: 18px;
+  background: conic-gradient(
+    from 180deg at 50% 0%,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.tile:hover .shine {
+  opacity: 1;
+}
+
+/* STATS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+.stat {
+  display: grid;
+  gap: 2px;
+  place-items: center;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.stat strong {
+  font-size: 1.4rem;
+}
+.stat span {
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  width: 100%;
+  justify-content: center;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: saturate(120%) blur(22px);
+  z-index: 10;
+}
+.navlink {
+  color: var(--txt);
+  text-decoration: none;
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+  font-size: 1.2rem;
+}
+.navlink.active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+.navlink:hover {
+  opacity: 0.85;
+}
+
+/* PILLS */
+.pill {
+  display: inline-block;
+  position: relative;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  font-size: 1rem;
+  color: var(--txt);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: transform 0.15s ease;
 }
-button:hover {
-  border-color: #646cff;
+.pill:active {
+  transform: scale(0.98);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 0.7;
 }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.linkPill {
+  text-decoration: none;
+  line-height: 1;
 }
