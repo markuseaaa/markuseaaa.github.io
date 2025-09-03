@@ -5,13 +5,13 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <NavLink to="/" className="navlink">
-        Forside
+        OM MIG
       </NavLink>
       <NavLink to="/projekter" className="navlink">
-        Projekter
+        PROJEKTER
       </NavLink>
       <NavLink to="/kontakt" className="navlink">
-        Kontakt
+        KONTAKT
       </NavLink>
     </nav>
   );
