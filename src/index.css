@@ -202,7 +202,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* NAVBAR */
+/* NAVBAR (original) */
 .navbar {
   position: fixed;
   top: 0; /* sidder øverst */
@@ -220,6 +220,7 @@ body {
 
   z-index: 10;
 }
+
 .navCenter {
   position: absolute;
   left: 48%;
@@ -227,12 +228,14 @@ body {
   display: flex;
   gap: 60px;
 }
+
 /* Logo */
 .navLogo .logoImg {
   height: 40px;
   width: auto;
   display: block;
 }
+
 /* Links */
 .navlink {
   color: var(--txt);
