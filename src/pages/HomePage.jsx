@@ -4,12 +4,18 @@ import GlassPill from "../components/GlassPill.jsx";
 import { Link } from "react-router";
 import CinematicStage from "../components/CinematicStage.jsx";
 import ParallaxStack from "../components/ParallaxStack.jsx";
+import Logo3D from "../components/Logo3D.jsx";
 
 export default function HomePage() {
   return (
     <>
       {/* HERO */}
       <section className="heroFull">
+        {/* 3D canvas sits behind text */}
+        <div className="heroCanvas">
+          <Logo3D />
+        </div>
+
         <div className="heroCenter">
           <h1 className="title">Markus Kristensen</h1>
           <TypingSubtitle />
