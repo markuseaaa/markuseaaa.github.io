@@ -23,32 +23,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* APPLE-STYLE CINEMATIC STAGE */}
-      <CinematicStage
-        heightVh={400} // try 400–600 depending on how long you want it pinned
-        bgUrl="/baggrund.png" // fixed background during this section
-        captions={[
-          "Smuk. Enkel. Moderne.",
-          "Flydende glass-effekt.",
-          "Fokus på detaljer.",
-          "Bygget til performance.",
-        ]}
-        // optional: replace the placeholder with a real image or composition:
-        deviceContent={
-          <img
-            src="/placeholder-wide.jpg" // swap to your asset, or keep placeholder
-            alt="Showcase"
-            style={{
-              width: "100%",
-              height: "auto",
-              display: "block",
-              borderRadius: 22,
-            }}
-          />
-        }
-      />
-
       <ParallaxStack speed={0.2}>
         <GlassCard>
           <h2 className="h2">Udvalgte højdepunkter</h2>
@@ -101,6 +75,31 @@ export default function HomePage() {
           </div>
         </GlassCard>
       </ParallaxStack>
+
+      {/* APPLE-STYLE CINEMATIC STAGE */}
+      <CinematicStage
+        heightVh={400} // try 400–600 depending on how long you want it pinned
+        bgUrl="/baggrund.png" // fixed background during this section
+        captions={[
+          "Smuk. Enkel. Moderne.",
+          "Flydende glass-effekt.",
+          "Fokus på detaljer.",
+          "Bygget til performance.",
+        ]}
+        // optional: replace the placeholder with a real image or composition:
+        deviceContent={
+          <img
+            src="/placeholder-wide.jpg" // swap to your asset, or keep placeholder
+            alt="Showcase"
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "block",
+              borderRadius: 22,
+            }}
+          />
+        }
+      />
     </>
   );
 }

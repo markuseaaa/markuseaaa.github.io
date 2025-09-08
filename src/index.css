@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --bg: #121212;
@@ -14,9 +17,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--txt);
-  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI,
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-    "Segoe UI Emoji";
+  @apply font-sans;
 }
 
 /* BACKGROUND IMAGE */
@@ -48,7 +49,24 @@ body {
   font-size: clamp(2.5rem, 7vw, 4rem);
   letter-spacing: -0.02em;
   margin-bottom: 0;
+  color: #fff; /* behold hvid tekst */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
+    0 0 16px rgba(255, 255, 255, 0.2), 0 0 24px rgba(255, 255, 255, 0.1);
+  animation: subtleGlow 4s ease-in-out infinite;
 }
+
+@keyframes subtleGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.2),
+      0 0 6px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
+      0 0 10px rgba(255, 255, 255, 0.25);
+  }
+}
+
 .subtitle {
   opacity: 0.92;
   font-size: clamp(1rem, 2.5vw, 1.375rem);
@@ -202,56 +220,189 @@ body {
   font-size: 0.9rem;
 }
 
-/* NAVBAR (original) */
 .navbar {
   position: fixed;
-  top: 0; /* sidder øverst */
-  left: 0; /* starter i venstre */
-  width: 100%; /* fylder hele bredden */
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 32px;
-
+  top: 30px; /* margin fra toppen */
+  left: 50%;
+  transform: translateX(-50%); /* centrer horisontalt */
+  width: 90%; /* eller max-width: 1200px; hvis du vil begrænse */
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1000;
   background: rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: saturate(135%) blur(30px);
-
-  z-index: 10;
+  -webkit-backdrop-filter: saturate(135%) blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50px;
+  padding: 0 25px;
+  box-shadow: 0 4px 8px rgba(68, 68, 68, 0.1);
 }
 
-.navCenter {
-  position: absolute;
-  left: 48%;
-  transform: translateX(-50%);
+.navInner {
+  position: relative;
   display: flex;
-  gap: 60px;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
 }
 
 /* Logo */
-.navLogo .logoImg {
+.logoImg {
   height: 40px;
   width: auto;
   display: block;
 }
 
-/* Links */
+.navCenter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
 .navlink {
+  position: relative;
   color: var(--txt);
   text-decoration: none;
-  font-weight: 300;
-  transition: opacity 0.2s ease;
-  font-size: 1.2rem;
-  margin-left: 20px; /* spacing mellem links */
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  padding: 6px 2px;
+  transition: opacity 0.2s ease, text-shadow 0.3s ease;
 }
 
+.navlink:hover,
 .navlink.active {
-  font-weight: 500;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
+    0 0 10px rgba(255, 255, 255, 0.25);
+  font-weight: 600;
 }
 
-.navlink:hover {
-  font-weight: 500;
+.social {
+  display: inline-grid;
+  place-items: center;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9); /* styrer svg via currentColor */
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social svg {
+  display: block;
+  transition: filter 0.3s ease; /* vi animerer skyggen */
+  will-change: filter;
+}
+
+/* Hover-effekt: subtil glow på SVG */
+.social:hover {
+  color: #fff;
+  transform: scale(1.12);
+}
+
+.social:hover svg {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* lidt luft mellem ikoner og burger */
+}
+
+/* Højre side (burger) */
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+/* Burger */
+.navToggle {
+  display: none;
+  position: relative;
+  width: 40px;
+  height: 34px;
+  border: 1px solid var(--glass-brd);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.navToggle .bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
+}
+.navToggle .bar:nth-child(1) {
+  top: 10px;
+}
+.navToggle .bar:nth-child(2) {
+  top: 16px;
+}
+.navToggle .bar:nth-child(3) {
+  top: 22px;
+}
+.navToggle.is-open .bar:nth-child(1) {
+  top: 16px;
+  transform: rotate(45deg);
+}
+.navToggle.is-open .bar:nth-child(2) {
+  opacity: 0;
+}
+.navToggle.is-open .bar:nth-child(3) {
+  top: 16px;
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+  /* Toplinjen: logo til venstre, burger til højre */
+  .navInner {
+    position: relative; /* anchor for absolutely positioned dropdown */
+    display: flex;
+    justify-content: space-between; /* logo left, burger right */
+    align-items: center;
+  }
+
+  /* Skjul center-links i baren på mobil (vi bruger dropdown) */
+  .navCenter {
+    position: absolute; /* anchor: .navInner */
+    top: calc(100% + 8px); /* lige under navbaren */
+    right: 20px; /* hæng i højre side */
+    left: auto; /* IMPORTANT: fjern centrering */
+    width: min(78vw, 260px);
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    text-align: right; /* højrejustér tekst/links */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    backdrop-filter: saturate(135%) blur(18px);
+    -webkit-backdrop-filter: saturate(135%) blur(18px);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1001;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .navCenter.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Burger synlig – skub helt til højre */
+  .navToggle {
+    display: block;
+    margin-left: auto; /* hold den i højre side */
+  }
 }
 
 /* PILLS */
