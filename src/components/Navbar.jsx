@@ -24,13 +24,13 @@ export default function Navbar() {
         {/* Links (midt) */}
         <div className={"navCenter" + (open ? " open" : "")}>
           <NavLink to="/ommig" className={linkClass}>
-            OM MIG
+            Om Mig
           </NavLink>
           <NavLink to="/projekter" className={linkClass}>
-            PROJEKTER
+            Projekter
           </NavLink>
           <NavLink to="/kontakt" className={linkClass}>
-            KONTAKT
+            Kontakt
           </NavLink>
         </div>
 

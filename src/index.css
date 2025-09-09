@@ -20,23 +20,12 @@ body {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-/* BACKGROUND IMAGE */
-.page {
-  position: relative;
-  overflow-x: clip;
-  background-image: url("assets/baggrund.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top center;
-  background-attachment: scroll;
-}
-
-.container {
+.pageContent {
   position: relative;
   z-index: 1;
   max-width: 90%;
   margin: 0 auto;
-  padding: 120px 24px 96px;
+  padding: 60px 24px 96px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -195,21 +184,15 @@ body {
 }
 
 .navbar {
-  position: fixed;
-  top: 30px; /* margin fra toppen */
-  left: 50%;
-  transform: translateX(-50%); /* centrer horisontalt */
-  width: 90%; /* eller max-width: 1200px; hvis du vil begrænse */
-  max-width: 1200px;
-  margin: 0 auto;
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: saturate(135%) blur(30px);
-  -webkit-backdrop-filter: saturate(135%) blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 50px;
-  padding: 0 25px;
-  box-shadow: 0 4px 8px rgba(68, 68, 68, 0.1);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  width: calc(100% - 24px);
+  max-width: none;
+  padding: 0 12px;
+  margin-top: 25px;
 }
 
 .navInner {
@@ -219,11 +202,10 @@ body {
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 12px 20px;
 }
 
 .logoImg {
-  height: 40px;
+  height: 45px;
   width: auto;
   display: block;
   filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.2))
@@ -248,7 +230,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 60px;
+  gap: 90px;
   align-items: center;
 }
 
@@ -256,7 +238,7 @@ body {
   position: relative;
   color: var(--txt);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: 0.02em;
   padding: 6px 2px;
@@ -656,16 +638,6 @@ body {
   place-items: center;
   text-align: center;
   overflow: hidden; /* clip any model overflow */
-}
-
-/* canvas takes the full hero and sits behind text */
-.heroCanvas {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none; /* so clicks go to the scroll arrow */
-  transform: scale(1.05); /* tiny overscan so edges don't show */
-  filter: blur(0px); /* set >0 for dreamy look if you want */
 }
 
 .heroCenter {

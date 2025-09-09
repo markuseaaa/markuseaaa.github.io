@@ -5,12 +5,14 @@ import Projects from "./pages/Projects.jsx";
 import Contact from "./pages/Contact.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
+import AnimatedGradientBG from "./components/AnimatedGradientBG.jsx";
 
 export default function App() {
   return (
-    <div className="page">
-      <main className="container">
-        <Navbar />
+    <div>
+      <AnimatedGradientBG />
+      <Navbar />
+      <main className="pageContent">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/ommig" element={<About />} />
