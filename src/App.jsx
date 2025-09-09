@@ -6,11 +6,13 @@ import Contact from "./pages/Contact.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import AnimatedGradientBG from "./components/AnimatedGradientBG.jsx";
+import Shape from "./components/Shape.jsx";
 
 export default function App() {
   return (
     <div>
       <AnimatedGradientBG />
+      <Shape />
       <Navbar />
       <main className="pageContent">
         <Routes>
