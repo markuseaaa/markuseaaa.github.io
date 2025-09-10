@@ -1,4 +1,3 @@
-// FloatingBlobsPastelCirclesPageWorld.jsx
 import React, { useMemo, useRef, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Billboard, Circle, GradientTexture } from "@react-three/drei";
@@ -93,6 +92,7 @@ function BlobsController({
   spawnSpacing = 1.5, // >= 1.0; min center distance = (ri+rj)*spawnSpacing
   warmupSeconds = 1.5, // ramp-in duration for forces/impulses
   maxSpeedFactor = 1.15, // cap at baseSpeed * Hpx * this factor
+  minSpeedFactor = 0.13, // 🔸 NEW: never go below this fraction of base speed
 }) {
   const { viewport } = useThree();
   const Wpx = window.innerWidth;
@@ -209,14 +209,15 @@ function BlobsController({
       if (!moved) break;
     }
 
-    // 3) Write positions + gentle initial velocity
+    // 3) Write positions + gentle initial velocity (>= minSpeed)
     for (let i = 0; i < count; i++) {
       pos.current[i].x = points[i].x;
       pos.current[i].y = points[i].y;
 
       const angle = Math.random() * Math.PI * 2;
       const basePx = baseSpeed * Hpx;
-      const initPx = basePx * (0.18 + Math.random() * 0.06);
+      const minSpeed = basePx * minSpeedFactor; // 🔸 ensure non-zero motion
+      const initPx = Math.max(basePx * (0.18 + Math.random() * 0.06), minSpeed);
       vels.current[i].x = Math.cos(angle) * initPx;
       vels.current[i].y = Math.sin(angle) * initPx;
     }
@@ -231,6 +232,7 @@ function BlobsController({
     baseSpeed,
     spawnSpacing,
     radiiPx,
+    minSpeedFactor, // 🔸
   ]);
 
   useFrame((state, dt) => {
@@ -243,6 +245,7 @@ function BlobsController({
 
     const basePx = baseSpeed * Hpx;
     const maxSpeed = basePx * maxSpeedFactor;
+    const minSpeed = basePx * minSpeedFactor; // 🔸 minimum drift
     const damp = 0.997;
 
     // move + mouse + walls
@@ -290,10 +293,26 @@ function BlobsController({
         vels.current[i].y *= -0.95;
       }
 
-      // friction + speed clamp
+      // friction
       vels.current[i].x *= damp;
       vels.current[i].y *= damp;
-      const sp = Math.hypot(vels.current[i].x, vels.current[i].y);
+
+      // 🔸 enforce MIN speed (after friction, before max clamp)
+      let sp = Math.hypot(vels.current[i].x, vels.current[i].y);
+      if (sp < minSpeed) {
+        if (sp < 1e-5) {
+          const a = Math.random() * Math.PI * 2;
+          vels.current[i].x = Math.cos(a) * minSpeed;
+          vels.current[i].y = Math.sin(a) * minSpeed;
+        } else {
+          const s = minSpeed / sp;
+          vels.current[i].x *= s;
+          vels.current[i].y *= s;
+        }
+      }
+
+      // clamp MAX speed
+      sp = Math.hypot(vels.current[i].x, vels.current[i].y);
       if (sp > maxSpeed) {
         const s = maxSpeed / sp;
         vels.current[i].x *= s;
@@ -391,6 +410,7 @@ export default function FloatingBlobsPastelCirclesPageWorld({
   spawnSpacing = 1.5, // try 1.4–1.7 for spread amount
   warmupSeconds = 0.5,
   maxSpeedFactor = 1.3,
+  minSpeedFactor = 0.22, // 🔸 expose minimum speed
 }) {
   const pageHeightPx = usePageHeight();
 
@@ -436,6 +456,7 @@ export default function FloatingBlobsPastelCirclesPageWorld({
           spawnSpacing={spawnSpacing}
           warmupSeconds={warmupSeconds}
           maxSpeedFactor={maxSpeedFactor}
+          minSpeedFactor={minSpeedFactor} // 🔸 pass down
         />
       </Canvas>
     </div>
