@@ -1,6 +1,6 @@
-import React, { useMemo, useRef, useEffect, useState } from "react";
+import React, { useMemo, useRef, useEffect, useState, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Billboard, Circle, GradientTexture } from "@react-three/drei";
+import { Billboard, useTexture } from "@react-three/drei";
 
 /* --- Track full document height (updates as content changes) --- */
 function usePageHeight() {
@@ -30,31 +30,35 @@ function usePageHeight() {
   return h;
 }
 
-/* --- One blob: perfect circle (billboard), pastel gradient, subtle breathing --- */
+/* --- One blob: billboarded PNG with subtle breathing --- */
 const Blob = React.forwardRef(function Blob(
-  { radiusWorld, palette, wobble = 0.006, phase = 0 },
+  { radiusWorld, imgSrc, imgOpacity = 0.7, wobble = 0.006, phase = 0 },
   ref
 ) {
   const inner = useRef();
+  const tex = useTexture(imgSrc);
+
   useFrame(({ clock }) => {
     if (!inner.current) return;
     const t = clock.getElapsedTime();
     const s = radiusWorld * (1 + wobble * Math.sin(t * 0.8 + phase));
-    inner.current.scale.set(s, s, 1); // uniform -> always a perfect circle
+    inner.current.scale.set(s, s, 1); // keep perfectly round
   });
+
   return (
     <group ref={ref}>
       <Billboard ref={inner} follow>
-        <Circle args={[1, 96]}>
-          <meshBasicMaterial toneMapped={false}>
-            <GradientTexture
-              attach="map"
-              stops={[0, 0.5, 1]}
-              colors={palette}
-              size={1024}
-            />
-          </meshBasicMaterial>
-        </Circle>
+        <mesh>
+          <planeGeometry args={[2, 2]} />
+          <meshBasicMaterial
+            map={tex}
+            transparent
+            opacity={imgOpacity} // <<< opacity control
+            alphaTest={0.01}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
       </Billboard>
     </group>
   );
@@ -67,7 +71,7 @@ function radicalInverseVdC(bits) {
   bits = ((bits & 0x33333333) << 2) | ((bits & 0xcccccccc) >>> 2);
   bits = ((bits & 0x0f0f0f0f) << 4) | ((bits & 0xf0f0f0f0) >>> 4);
   bits = ((bits & 0x00ff00ff) << 8) | ((bits & 0xff00ff00) >>> 8);
-  return (bits >>> 0) * 2.3283064365386963e-10; // / 2^32
+  return (bits >>> 0) * 2.3283064365386963e-10;
 }
 function hammersley2D(i, n, jitter = 0.05) {
   let u = (i + 0.5) / n;
@@ -85,21 +89,21 @@ function BlobsController({
   mouseForce = 0.02,
   separationForce = 0.06,
   restitution = 0.85,
-  palette,
   pageHeightPx,
   spawnMode = "pageTop", // "pageTop" | "viewTop"
   spawnHeightPx = 600, // px band height for spawning
-  spawnSpacing = 1.5, // >= 1.0; min center distance = (ri+rj)*spawnSpacing
-  warmupSeconds = 1.5, // ramp-in duration for forces/impulses
-  maxSpeedFactor = 1.15, // cap at baseSpeed * Hpx * this factor
-  minSpeedFactor = 0.13, // 🔸 NEW: never go below this fraction of base speed
+  spawnSpacing = 1.5, // min center distance = (ri+rj)*spawnSpacing
+  warmupSeconds = 0.5, // ramp-in to avoid launch burst
+  maxSpeedFactor = 1.3, // cap at baseSpeed * Hpx * this factor
+  minSpeedFactor = 0.22, // never go below this fraction of base speed
+  imgSrc = "../assets/bubble.png",
+  imgOpacity = 0.7, // <<< NEW
 }) {
   const { viewport } = useThree();
   const Wpx = window.innerWidth;
   const Hpx = window.innerHeight;
   const pxPerWorldY = Hpx / viewport.height;
 
-  // positions/velocities in PAGE PIXELS
   const pos = useRef(Array.from({ length: count }, () => ({ x: 0, y: 0 })));
   const vels = useRef(Array.from({ length: count }, () => ({ x: 0, y: 0 })));
   const phases = useMemo(
@@ -134,10 +138,7 @@ function BlobsController({
     };
   }, []);
 
-  // Time ramp (prevents launch burst)
   const startTimeRef = useRef(null);
-
-  // Build radii in px for spawn math
   const radiiPx = useMemo(
     () => radiusWorlds.map((r) => Math.max(4, r * pxPerWorldY)),
     [radiusWorlds, pxPerWorldY]
@@ -148,12 +149,12 @@ function BlobsController({
     if (!pageHeightPx || radiiPx.length !== count) return;
 
     const rMax = Math.max(...radiiPx);
-    const minX = rMax;
-    const maxX = Wpx - rMax;
+    const minX = rMax,
+      maxX = Wpx - rMax;
 
     const anchorY = spawnMode === "viewTop" ? window.scrollY : 0;
-    const minYPage = rMax;
-    const maxYPage = pageHeightPx - rMax;
+    const minYPage = rMax,
+      maxYPage = pageHeightPx - rMax;
 
     const spawnTop = Math.max(minYPage, anchorY + rMax);
     const spawnBottom = Math.min(
@@ -161,36 +162,33 @@ function BlobsController({
       spawnTop + Math.max(spawnHeightPx, rMax * 2)
     );
 
-    // 1) Low-discrepancy seed across the band
     const points = [];
     for (let i = 0; i < count; i++) {
       const [u, v] = hammersley2D(i, count, 0.06);
-      const xi = minX + u * (maxX - minX);
-      const yi = spawnTop + v * (spawnBottom - spawnTop);
-      points.push({ x: xi, y: yi });
+      points.push({
+        x: minX + u * (maxX - minX),
+        y: spawnTop + v * (spawnBottom - spawnTop),
+      });
     }
 
-    // 2) Relaxation: push apart if closer than (ri+rj)*spawnSpacing
-    const iterations = 30;
-    for (let it = 0; it < iterations; it++) {
+    for (let it = 0; it < 30; it++) {
       let moved = false;
       for (let i = 0; i < count; i++) {
         for (let j = i + 1; j < count; j++) {
-          const dx = points[j].x - points[i].x;
-          const dy = points[j].y - points[i].y;
-          const d2 = dx * dx + dy * dy;
-          const minD = (radiiPx[i] + radiiPx[j]) * spawnSpacing;
+          const dx = points[j].x - points[i].x,
+            dy = points[j].y - points[i].y;
+          const d2 = dx * dx + dy * dy,
+            minD = (radiiPx[i] + radiiPx[j]) * spawnSpacing;
           if (d2 > 1e-8) {
             const d = Math.sqrt(d2);
             if (d < minD) {
               const nx = dx / d,
-                ny = dy / d;
-              const push = (minD - d) * 0.5;
+                ny = dy / d,
+                push = (minD - d) * 0.5;
               points[i].x -= nx * push;
               points[i].y -= ny * push;
               points[j].x += nx * push;
               points[j].y += ny * push;
-              // Clamp to band (respect largest radius margin)
               points[i].x = Math.min(maxX, Math.max(minX, points[i].x));
               points[i].y = Math.min(
                 spawnBottom,
@@ -209,14 +207,13 @@ function BlobsController({
       if (!moved) break;
     }
 
-    // 3) Write positions + gentle initial velocity (>= minSpeed)
     for (let i = 0; i < count; i++) {
       pos.current[i].x = points[i].x;
       pos.current[i].y = points[i].y;
 
       const angle = Math.random() * Math.PI * 2;
-      const basePx = baseSpeed * Hpx;
-      const minSpeed = basePx * minSpeedFactor; // 🔸 ensure non-zero motion
+      const basePx = baseSpeed * Hpx,
+        minSpeed = basePx * minSpeedFactor;
       const initPx = Math.max(basePx * (0.18 + Math.random() * 0.06), minSpeed);
       vels.current[i].x = Math.cos(angle) * initPx;
       vels.current[i].y = Math.sin(angle) * initPx;
@@ -232,7 +229,7 @@ function BlobsController({
     baseSpeed,
     spawnSpacing,
     radiiPx,
-    minSpeedFactor, // 🔸
+    minSpeedFactor,
   ]);
 
   useFrame((state, dt) => {
@@ -240,44 +237,38 @@ function BlobsController({
     if (startTimeRef.current == null)
       startTimeRef.current = state.clock.getElapsedTime();
     const t = state.clock.getElapsedTime() - startTimeRef.current;
-    const ramp = Math.min(1, t / warmupSeconds);
-    const rampEase = ramp * ramp; // slow start
+    const ramp = Math.min(1, t / warmupSeconds),
+      rampEase = ramp * ramp;
 
-    const basePx = baseSpeed * Hpx;
-    const maxSpeed = basePx * maxSpeedFactor;
-    const minSpeed = basePx * minSpeedFactor; // 🔸 minimum drift
-    const damp = 0.997;
+    const basePx = baseSpeed * Hpx,
+      maxSpeed = basePx * maxSpeedFactor,
+      minSpeed = basePx * minSpeedFactor,
+      damp = 0.997;
 
-    // move + mouse + walls
     for (let i = 0; i < count; i++) {
       const rPx = radiiPx[i];
 
-      // tiny drift (scaled by ramp)
       vels.current[i].x += (Math.random() - 0.5) * 0.8 * delta * rampEase;
       vels.current[i].y += (Math.random() - 0.5) * 0.8 * delta * rampEase;
 
-      // gentle mouse repel (px space), scaled by ramp
-      const dxm = pos.current[i].x - mouse.x;
-      const dym = pos.current[i].y - mouse.y;
-      const dm2 = dxm * dxm + dym * dym;
-      const influence = Math.max(rPx * 3.2, 140);
+      const dxm = pos.current[i].x - mouse.x,
+        dym = pos.current[i].y - mouse.y;
+      const dm2 = dxm * dxm + dym * dym,
+        influence = Math.max(rPx * 3.2, 140);
       if (dm2 < influence * influence && dm2 > 1e-6) {
-        const dm = Math.sqrt(dm2);
-        const f = (1 - dm / influence) * (mouseForce * 100) * rampEase;
+        const dm = Math.sqrt(dm2),
+          f = (1 - dm / influence) * (mouseForce * 100) * rampEase;
         vels.current[i].x += (dxm / dm) * f;
         vels.current[i].y += (dym / dm) * f;
       }
 
-      // integrate
       pos.current[i].x += vels.current[i].x * delta;
       pos.current[i].y += vels.current[i].y * delta;
 
-      // walls (full page)
       const minX = rPx,
-        maxX = Wpx - rPx;
-      const minY = rPx,
+        maxX = Wpx - rPx,
+        minY = rPx,
         maxY = pageHeightPx - rPx;
-
       if (pos.current[i].x > maxX) {
         pos.current[i].x = maxX;
         vels.current[i].x *= -0.95;
@@ -293,11 +284,9 @@ function BlobsController({
         vels.current[i].y *= -0.95;
       }
 
-      // friction
       vels.current[i].x *= damp;
       vels.current[i].y *= damp;
 
-      // 🔸 enforce MIN speed (after friction, before max clamp)
       let sp = Math.hypot(vels.current[i].x, vels.current[i].y);
       if (sp < minSpeed) {
         if (sp < 1e-5) {
@@ -310,8 +299,6 @@ function BlobsController({
           vels.current[i].y *= s;
         }
       }
-
-      // clamp MAX speed
       sp = Math.hypot(vels.current[i].x, vels.current[i].y);
       if (sp > maxSpeed) {
         const s = maxSpeed / sp;
@@ -320,22 +307,20 @@ function BlobsController({
       }
     }
 
-    // collisions (px space) with ramped forces/impulses
+    // collisions (px space)
     for (let i = 0; i < count; i++) {
       const rAi = radiiPx[i];
       for (let j = i + 1; j < count; j++) {
         const rBj = radiiPx[j];
-
-        const dx = pos.current[j].x - pos.current[i].x;
-        const dy = pos.current[j].y - pos.current[i].y;
+        const dx = pos.current[j].x - pos.current[i].x,
+          dy = pos.current[j].y - pos.current[i].y;
         const d2 = dx * dx + dy * dy;
         if (d2 <= 1e-10) continue;
-        const d = Math.sqrt(d2);
-        const nx = dx / d,
-          ny = dy / d;
-        const minD = rAi + rBj;
+        const d = Math.sqrt(d2),
+          nx = dx / d,
+          ny = dy / d,
+          minD = rAi + rBj;
 
-        // pre-contact cushion (scaled by ramp)
         const cushion = minD * 1.08;
         if (d < cushion) {
           const push = (1 - d / cushion) * (separationForce * 100) * rampEase;
@@ -345,20 +330,19 @@ function BlobsController({
           vels.current[j].y += ny * push;
         }
 
-        // overlap → separate + bounce impulse (scaled by ramp)
         if (d < minD) {
-          const overlap = minD - d;
-          const corr = overlap * 0.5;
+          const overlap = minD - d,
+            corr = overlap * 0.5;
           pos.current[i].x -= nx * corr;
           pos.current[i].y -= ny * corr;
           pos.current[j].x += nx * corr;
           pos.current[j].y += ny * corr;
 
-          const rvx = vels.current[j].x - vels.current[i].x;
-          const rvy = vels.current[j].y - vels.current[i].y;
+          const rvx = vels.current[j].x - vels.current[i].x,
+            rvy = vels.current[j].y - vels.current[i].y;
           const vn = rvx * nx + rvy * ny;
           if (vn < 0) {
-            const J = ((-(1 + restitution) * vn) / 2) * rampEase; // equal mass
+            const J = ((-(1 + restitution) * vn) / 2) * rampEase;
             vels.current[i].x -= nx * J;
             vels.current[i].y -= ny * J;
             vels.current[j].x += nx * J;
@@ -370,11 +354,9 @@ function BlobsController({
 
     // Map PAGE px → world coords (fixed viewport slice)
     for (let i = 0; i < count; i++) {
-      const gx = (pos.current[i].x / Wpx - 0.5) * viewport.width;
-      const gy = -(
-        ((pos.current[i].y - window.scrollY) / Hpx - 0.5) *
-        viewport.height
-      );
+      const { width, height } = viewport;
+      const gx = (pos.current[i].x / Wpx - 0.5) * width;
+      const gy = -(((pos.current[i].y - window.scrollY) / Hpx - 0.5) * height);
       const ref = blobRefs[i].current;
       if (ref) ref.position.set(gx, gy, 0);
     }
@@ -387,7 +369,8 @@ function BlobsController({
           key={i}
           ref={ref}
           radiusWorld={radiusWorlds[i % radiusWorlds.length]}
-          palette={palette}
+          imgSrc={imgSrc}
+          imgOpacity={imgOpacity} // <<< pass opacity
           wobble={0.006}
           phase={phases[i]}
         />
@@ -396,21 +379,22 @@ function BlobsController({
   );
 }
 
-/* --- Public component: fixed canvas, full-page world, top spawn, spread out --- */
+/* --- Public component: fixed canvas, full-page world --- */
 export default function FloatingBlobsPastelCirclesPageWorld({
   size = 0.5,
   count = 3,
-  palette = ["#E8CEFF", "#C0E6EE", "#F7EDDE"],
   baseSpeed = 0.13,
   mouseForce = 0.02,
   separationForce = 0.06,
   restitution = 0.85,
-  spawnMode = "pageTop", // "pageTop" | "viewTop"
+  spawnMode = "pageTop",
   spawnHeightPx = 600,
-  spawnSpacing = 1.5, // try 1.4–1.7 for spread amount
+  spawnSpacing = 1.5,
   warmupSeconds = 0.5,
   maxSpeedFactor = 1.3,
-  minSpeedFactor = 0.22, // 🔸 expose minimum speed
+  minSpeedFactor = 0.22,
+  imgSrc = "../assets/bubble.png",
+  imgOpacity = 0.7, // <<< exposed
 }) {
   const pageHeightPx = usePageHeight();
 
@@ -440,24 +424,30 @@ export default function FloatingBlobsPastelCirclesPageWorld({
         gl={{ antialias: true, alpha: true }}
         camera={{ position: [0, 0, 5], fov: 60 }}
         style={{ width: "100%", height: "100%", background: "transparent" }}
-        onCreated={({ scene }) => (scene.background = null)}
+        onCreated={({ gl, scene }) => {
+          scene.background = null;
+          gl.setClearColor(0x000000, 0); // keep canvas transparent
+        }}
       >
-        <BlobsController
-          count={count}
-          radiusWorlds={radiusWorlds}
-          palette={palette}
-          baseSpeed={baseSpeed}
-          mouseForce={mouseForce}
-          separationForce={separationForce}
-          restitution={restitution}
-          pageHeightPx={pageHeightPx}
-          spawnMode={spawnMode}
-          spawnHeightPx={spawnHeightPx}
-          spawnSpacing={spawnSpacing}
-          warmupSeconds={warmupSeconds}
-          maxSpeedFactor={maxSpeedFactor}
-          minSpeedFactor={minSpeedFactor} // 🔸 pass down
-        />
+        <Suspense fallback={null}>
+          <BlobsController
+            count={count}
+            radiusWorlds={radiusWorlds}
+            baseSpeed={baseSpeed}
+            mouseForce={mouseForce}
+            separationForce={separationForce}
+            restitution={restitution}
+            pageHeightPx={pageHeightPx}
+            spawnMode={spawnMode}
+            spawnHeightPx={spawnHeightPx}
+            spawnSpacing={spawnSpacing}
+            warmupSeconds={warmupSeconds}
+            maxSpeedFactor={maxSpeedFactor}
+            minSpeedFactor={minSpeedFactor}
+            imgSrc={imgSrc}
+            imgOpacity={imgOpacity} // <<< pass opacity down
+          />
+        </Suspense>
       </Canvas>
     </div>
   );

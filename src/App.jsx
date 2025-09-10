@@ -7,12 +7,13 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import AnimatedGradientBG from "./components/AnimatedGradientBG.jsx";
 import Shape from "./components/Shape.jsx";
+import bubbleUrl from "./assets/bubble.png";
 
 export default function App() {
   return (
     <div>
       <AnimatedGradientBG />
-      <Shape />
+      <Shape imgSrc={bubbleUrl} />
       <Navbar />
       <main className="pageContent">
         <Routes>
