@@ -4,6 +4,7 @@ import GlassPill from "../components/GlassPill.jsx";
 import { Link } from "react-router";
 import CinematicStage from "../components/CinematicStage.jsx";
 import ParallaxStack from "../components/ParallaxStack.jsx";
+import ProjectSection from "../components/ProjectSection.jsx";
 
 export default function HomePage() {
   return (
@@ -24,58 +25,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <ParallaxStack speed={0.2}>
-        <GlassCard>
-          <h2 className="h2">Udvalgte højdepunkter</h2>
-          <div className="stats">
-            <div className="stat">
-              <strong>20+</strong>
-              <span>Web/UX leverancer</span>
-            </div>
-            <div className="stat">
-              <strong>5</strong>
-              <span>Brandguides</span>
-            </div>
-            <div className="stat">
-              <strong>10k+</strong>
-              <span>Brugere nået</span>
-            </div>
-          </div>
-        </GlassCard>
-      </ParallaxStack>
-
-      <ParallaxStack speed={0.16}>
-        <GlassCard>
-          <h2 className="h2">Udvalgte projekter</h2>
-          <div className="grid">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="tile">
-                <div className="thumb" />
-                <div className="tileCaption">Projekt {i + 1}</div>
-              </div>
-            ))}
-          </div>
-          <div className="center" style={{ marginTop: "1rem" }}>
-            <Link to="/projekter" className="pill linkPill">
-              Se alle projekter
-            </Link>
-          </div>
-        </GlassCard>
-      </ParallaxStack>
-
-      <ParallaxStack speed={0.12}>
-        <GlassCard>
-          <h2 className="h2">Kontakt</h2>
-          <p className="muted">markus@example.com</p>
-          <div style={{ marginTop: "1rem" }}>
-            <GlassPill
-              onClick={() => (window.location = "mailto:markus@example.com")}
-            >
-              Skriv en mail
-            </GlassPill>
-          </div>
-        </GlassCard>
-      </ParallaxStack>
+      <ProjectSection />
 
       {/* APPLE-STYLE CINEMATIC STAGE */}
       <CinematicStage

@@ -184,14 +184,23 @@ body {
 }
 
 .navbar {
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: none;
-  box-shadow: none;
-  max-width: none;
-  padding: 0 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1200;
   margin-top: 25px;
+  padding: 10px 12px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 180ms ease, backdrop-filter 180ms ease,
+    border-color 180ms ease;
+}
+
+/* when scrolling: your glass style */
+.navbar.is-scrolled {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: saturate(135%) blur(30px);
+  -webkit-backdrop-filter: saturate(135%) blur(30px);
 }
 
 .navInner {
@@ -642,4 +651,118 @@ body {
 .heroCenter {
   position: relative;
   z-index: 1; /* above the canvas */
+}
+
+/* ===== Project Section (stacked parallax, overlap, tighter spacing) ===== */
+
+.proj-wrap {
+  position: relative;
+  /* Tighter scroll: each segment a bit shorter than full screen
+     Height = (N + 1) segments * 105vh */
+  height: calc((3 + 1) * 80vh);
+}
+
+.proj-blur {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  /* Stronger blur; adjust px to taste */
+  backdrop-filter: blur(10px) saturate(115%);
+  -webkit-backdrop-filter: blur(10px) saturate(115%);
+}
+
+.proj-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.proj-content {
+  width: min(96vw, 1200px);
+}
+
+.proj-stack {
+  position: relative;
+  height: 78vh; /* visible frame for slides */
+  margin: 0 auto;
+}
+
+.proj-slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: clamp(16px, 3vw, 28px);
+  will-change: transform, opacity;
+  padding-top: 15vh;
+}
+
+.proj-title {
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 3.2vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.proj-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(12px, 2vw, 22px);
+  align-items: center;
+}
+
+@media (min-width: 980px) {
+  .proj-body {
+    grid-template-columns: 1.25fr 1fr; /* image left, info right */
+    gap: clamp(18px, 3vw, 30px);
+  }
+}
+
+.proj-media {
+  width: 100%;
+  height: min(52vh, 560px);
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.proj-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.proj-info {
+  padding: clamp(6px, 1.5vw, 12px);
+}
+.proj-tags {
+  margin: 0 0 6px;
+  opacity: 0.8;
+  font-weight: 600;
+}
+.proj-desc {
+  margin: 0 0 14px;
+  opacity: 0.95;
+}
+
+.proj-sectionTitle {
+  position: sticky;
+  top: 5vh;
+  left: clamp(20px, 5vw, 60px);
+  z-index: 20;
+
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+
+  pointer-events: none;
+  user-select: none;
 }

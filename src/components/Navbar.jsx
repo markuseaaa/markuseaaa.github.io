@@ -5,14 +5,42 @@ import logo from "../assets/MKLOGO.svg";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
 
+  // Luk menu når route ændrer sig
   useEffect(() => setOpen(false), [pathname]);
+
+  // Tænd/glass når vi er forbi hero (eller lidt scroll fallback)
+  useEffect(() => {
+    const hero = document.querySelector(".heroFull");
+    let cleanup = () => {};
+
+    if (hero && "IntersectionObserver" in window) {
+      const obs = new IntersectionObserver(
+        (entries) => {
+          const e = entries[0];
+          // scrolled = true når hero ikke længere fylder det meste af viewport
+          setScrolled(e.intersectionRatio < 0.6);
+        },
+        { threshold: [0, 0.6, 1] }
+      );
+      obs.observe(hero);
+      cleanup = () => obs.disconnect();
+    } else {
+      const onScroll = () => setScrolled(window.scrollY > 10);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      cleanup = () => window.removeEventListener("scroll", onScroll);
+    }
+
+    return cleanup;
+  }, []);
 
   const linkClass = ({ isActive }) => "navlink" + (isActive ? " active" : "");
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? "is-scrolled" : ""}`}>
       <div className="navInner">
         {/* Logo (venstre) */}
         <div className="navLogo">
@@ -34,7 +62,7 @@ export default function Navbar() {
           </NavLink>
         </div>
 
-        {/* Højre side: sociale medier */}
+        {/* Højre side: sociale medier + burger */}
         <div className="navRight">
           <a
             href="mailto:markuskristensen04@gmail.com"
@@ -64,7 +92,6 @@ export default function Navbar() {
             <FaLinkedin />
           </a>
 
-          {/* Burger menu til mobil */}
           <button
             className={"navToggle" + (open ? " is-open" : "")}
             aria-label="Menu"
