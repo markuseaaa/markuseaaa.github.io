@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import CinematicStage from "../components/CinematicStage.jsx";
 import ParallaxStack from "../components/ParallaxStack.jsx";
 import ProjectSection from "../components/ProjectSection.jsx";
+import Skills from "../components/Skills.jsx";
 
 export default function HomePage() {
   return (
@@ -26,6 +27,8 @@ export default function HomePage() {
       </section>
 
       <ProjectSection />
+
+      <Skills />
 
       {/* APPLE-STYLE CINEMATIC STAGE */}
       <CinematicStage

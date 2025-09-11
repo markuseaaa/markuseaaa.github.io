@@ -766,3 +766,84 @@ body {
   pointer-events: none;
   user-select: none;
 }
+
+.skillsSection {
+  position: relative;
+  padding: clamp(96px, 12vh, 160px) 24px;
+  overflow: clip;
+}
+
+.skillsInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.wheelWrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.wheel {
+  position: relative;
+  border-radius: 999px;
+  will-change: transform;
+}
+
+.wheelItem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.wheelItemInner {
+  display: grid;
+  place-items: center;
+}
+
+.wheelItem img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  transition: transform 200ms ease, filter 200ms ease;
+}
+
+.wheelItem:hover img {
+  transform: scale(1.1);
+}
+
+.wheelCenterContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  max-width: 480px;
+  padding: 16px;
+  text-align: center;
+  pointer-events: none; /* tekst klikbar? -> fjern denne */
+}
+
+.skillsTitle {
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 900;
+  margin: 0 0 12px;
+}
+
+.skillsSubtitle {
+  font-size: clamp(20px, 1.6vw, 25px);
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+/* Responsivitet */
+@media (max-width: 640px) {
+  .wheelItem img {
+    width: 72px;
+    height: 72px;
+  }
+  .skillsTitle {
+    font-size: 28px;
+  }
+}
