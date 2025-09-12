@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import "../index.css";
 import reactlogo from "../assets/react.png";
 import jslogo from "../assets/javascript.png";
 import csslogo from "../assets/css.png";

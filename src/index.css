@@ -4,6 +4,9 @@
 :root {
   --bg: #121212;
   --txt: #fff;
+  --navH: 72px; /* din navbar-højde (har du måske allerede) */
+  --swarmShift: -2vh; /* så meget sværmen skubbes NED i arenaen */
+  --pinDur: 4.2; /* how many viewport heights the stage stays pinned */
 }
 
 html,
@@ -845,5 +848,181 @@ body {
   }
   .skillsTitle {
     font-size: 28px;
+  }
+}
+
+.aboutWords {
+  position: relative;
+  overflow: visible;
+  padding: clamp(40px, 6vh, 100px) 24px;
+}
+
+/* Pinned duration and built-in STOPPER:
+   We split ~60% swarm, ~40% content hold inside the same pin. */
+.aw-pinWrap {
+  position: relative;
+  height: calc(var(--pinDur) * 100vh);
+}
+
+.aw-bg {
+  position: absolute;
+  inset: -15% -10% auto -10%;
+  height: 70%;
+  filter: blur(28px);
+  pointer-events: none;
+  opacity: 0.22;
+  z-index: 0;
+}
+.aw-s1 {
+  background: radial-gradient(
+    40% 60% at 20% 40%,
+    rgba(171, 231, 255, 0.2),
+    transparent 60%
+  );
+}
+.aw-s2 {
+  background: radial-gradient(
+    35% 55% at 80% 30%,
+    rgba(116, 181, 202, 0.16),
+    transparent 65%
+  );
+}
+
+.aw-stage {
+  position: sticky;
+  top: var(--navH);
+  height: calc(100vh - var(--navH));
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+/* swarm */
+.wordsLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.word {
+  position: absolute;
+  top: calc(50% + var(--swarmShift));
+  left: 50%;
+  translate: -50% -50%;
+  color: var(--txt);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.28);
+  will-change: transform, opacity;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* content */
+.aw-contentOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 0 8px;
+}
+
+/* small UX helper: reduce momentum so users don't overshoot */
+.aw-pinWrap {
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.aw-header {
+  margin: 0 0 clamp(12px, 2vh, 24px);
+  margin-top: -30px;
+}
+
+.aw-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(24px, 5vw, 56px);
+  align-items: stretch;
+  width: min(100%, 1100px);
+}
+
+.aw-photo {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  width: 500px;
+  height: 500px;
+  justify-self: center;
+}
+.aw-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.aw-shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      60% 40% at 15% 10%,
+      rgba(255, 255, 255, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      40% 60% at 80% 20%,
+      rgba(255, 255, 255, 0.08),
+      transparent 70%
+    );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.aw-card {
+  padding: clamp(18px, 3vw, 28px) !important;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.aw-card .aboutLead {
+  font-size: 1.35rem; /* emphasize lead paragraph */
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.aw-card .aboutBody {
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.aboutWords .skillsSubtitle {
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.4;
+  opacity: 0.9;
+  margin-top: -5px; /* tighter to the title */
+  margin-bottom: 10px; /* sits higher above the grid */
+}
+
+@media (max-width: 980px) {
+  :root {
+    --pinDur: 7.5;
+  } /* a touch longer hold on small screens */
+  .aw-grid {
+    grid-template-columns: 1fr;
+  }
+  .aw-photo {
+    order: -1;
+  }
+  .aw-photo,
+  .aw-card {
+    justify-self: center;
+    max-width: 560px;
+    width: 100%;
   }
 }

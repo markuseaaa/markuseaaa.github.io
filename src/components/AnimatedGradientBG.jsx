@@ -1,6 +1,5 @@
 // src/components/AnimatedGradientBG.jsx
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
 import { useMemo, useRef } from "react";
 
 function AnimatedPlane() {
