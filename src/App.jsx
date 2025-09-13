@@ -1,27 +1,43 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, useLocation } from "react-router";
+import { AnimatePresence } from "framer-motion";
 import HomePage from "./pages/HomePage.jsx";
-import About from "./pages/About.jsx";
-import Projects from "./pages/Projects.jsx";
-import Contact from "./pages/Contact.jsx";
+import ProjectDetail from "./pages/ProjectDetails.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import AnimatedGradientBG from "./components/AnimatedGradientBG.jsx";
+import PageTransition from "./components/PageTransition.jsx";
 import Shape from "./components/Shape.jsx";
 import bubbleUrl from "./assets/bubble.png";
 
 export default function App() {
+  const location = useLocation();
+
   return (
     <div>
       <AnimatedGradientBG />
       <Shape imgSrc={bubbleUrl} />
       <Navbar />
       <main className="pageContent">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/ommig" element={<About />} />
-          <Route path="/projekter" element={<Projects />} />
-          <Route path="/kontakt" element={<Contact />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route
+              path="/"
+              element={
+                <PageTransition>
+                  <HomePage />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/projekter/:slug"
+              element={
+                <PageTransition>
+                  <ProjectDetail />
+                </PageTransition>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
       </main>
       <Footer />
     </div>

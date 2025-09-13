@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "slug": "portfolio-site",
+    "title": "Portfolio Site",
+    "image": "/projects/portfolio.jpg",
+    "tags": "web design, develop, logo design, wordpress",
+    "desc": "This is my introduction site that also serves as my portfolio."
+  },
+  {
+    "id": 2,
+    "slug": "kokkenes-koekken",
+    "title": "Kokkenes Køkken",
+    "image": "/projects/kokkenes.jpg",
+    "tags": "brand, web, performance",
+    "desc": "Glass UI refresh, accessibility pass, and content architecture."
+  },
+  {
+    "id": 3,
+    "slug": "forenede-service",
+    "title": "Forenede Service",
+    "image": "/projects/forenede.jpg",
+    "tags": "campaigns, year wheel, print",
+    "desc": "Seasonal storytelling and a practical brand & safety year wheel."
+  }
+]

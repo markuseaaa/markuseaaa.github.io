@@ -1,16 +1,17 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState, useCallback } from "react";
-import { useLocation, useNavigate, NavLink } from "react-router"; // keep NavLink for logo-home
+import { useLocation, useNavigate, NavLink } from "react-router";
+import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import logo from "../assets/MKLOGO.svg";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState(""); // "about" | "projects" | "contact"
+  const [active, setActive] = useState("");
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  // Utility: read CSS var --navH (px number, fallback 72)
   const getNavH = () => {
     const raw = getComputedStyle(document.documentElement)
       .getPropertyValue("--navH")
@@ -19,49 +20,57 @@ export default function Navbar() {
     return Number.isFinite(n) ? n : 72;
   };
 
-  // Smooth scroll with sticky offset
   const scrollToId = useCallback((id) => {
     const el = document.querySelector(id);
     if (!el) return;
     const navH = getNavH();
-    const y = el.getBoundingClientRect().top + window.scrollY - navH - 8; // extra 8px breathing room
+    const y = el.getBoundingClientRect().top + window.scrollY - navH - 8;
     window.scrollTo({ top: y, behavior: "smooth" });
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => setOpen(false), [pathname]);
 
-  // Toggle glass when past hero (or small scroll fallback)
+  // Observe hero or route sentinel to toggle glass
   useEffect(() => {
-    const hero = document.querySelector(".heroFull");
-    let cleanup = () => {};
-    if (hero && "IntersectionObserver" in window) {
-      const obs = new IntersectionObserver(
-        (entries) => setScrolled(entries[0].intersectionRatio < 0.6),
-        { threshold: [0, 0.6, 1] }
-      );
-      obs.observe(hero);
-      cleanup = () => obs.disconnect();
-    } else {
+    const sentinel =
+      document.querySelector(".heroFull") ||
+      document.querySelector(".routeTopSentinel");
+
+    if (!sentinel || !("IntersectionObserver" in window)) {
       const onScroll = () => setScrolled(window.scrollY > 10);
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
-      cleanup = () => window.removeEventListener("scroll", onScroll);
+      return () => window.removeEventListener("scroll", onScroll);
     }
-    return cleanup;
-  }, []);
 
-  // Scroll spy: highlight nav item based on section in view
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const r = entries[0]?.intersectionRatio ?? 1;
+        setScrolled(r < 0.6);
+      },
+      { threshold: [0, 0.6, 1] }
+    );
+
+    const rect = sentinel.getBoundingClientRect();
+    const vh = window.innerHeight || 1;
+    const visible =
+      Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0)) /
+      Math.max(1, rect.height || 1);
+    setScrolled(visible < 0.6);
+
+    obs.observe(sentinel);
+    return () => obs.disconnect();
+  }, [pathname]);
+
+  // Scroll spy
   useEffect(() => {
     const ids = ["#about", "#projects", "#contact"];
     const opts = {
-      // Trigger when section crosses slightly below the navbar
       root: null,
       rootMargin: `-${getNavH() + 40}px 0px -60% 0px`,
       threshold: 0.01,
     };
     const handler = (entries) => {
-      // Pick the topmost visible section
       const visible = entries
         .filter((e) => e.isIntersecting)
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
@@ -75,14 +84,10 @@ export default function Navbar() {
     return () => obs.disconnect();
   }, []);
 
-  // If user is on another route, navigate home first then scroll
   const go = (hash) => {
-    const doScroll = () => {
-      requestAnimationFrame(() => scrollToId(hash));
-    };
+    const doScroll = () => requestAnimationFrame(() => scrollToId(hash));
     if (pathname !== "/") {
       navigate("/");
-      // wait a tick for home to render sections
       setTimeout(doScroll, 30);
     } else {
       doScroll();
@@ -93,16 +98,19 @@ export default function Navbar() {
   const linkCls = (key) => "navlink" + (active === key ? " active" : "");
 
   return (
-    <nav className={`navbar ${scrolled ? "is-scrolled" : ""}`}>
+    <motion.nav
+      className={`navbar ${scrolled ? "is-scrolled" : ""}`}
+      initial={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+    >
       <div className="navInner">
-        {/* Logo (left) - back to home */}
         <div className="navLogo">
           <NavLink to="/" aria-label="Forside">
             <img src={logo} alt="Logo" className="logoImg" />
           </NavLink>
         </div>
 
-        {/* Center links (smooth scroll buttons) */}
         <div className={"navCenter" + (open ? " open" : "")}>
           <button className={linkCls("about")} onClick={() => go("#about")}>
             Om Mig
@@ -118,7 +126,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Right: socials + burger */}
         <div className="navRight">
           <a
             href="mailto:markuskristensen04@gmail.com"
@@ -160,6 +167,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
