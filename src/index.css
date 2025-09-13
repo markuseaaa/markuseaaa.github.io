@@ -385,6 +385,14 @@ body {
   }
 }
 
+/* keep anchors clear of the sticky navbar */
+#about,
+#skills,
+#projects,
+#contact {
+  scroll-margin-top: calc(var(--navH) + 8px);
+}
+
 /* PILLS */
 .pill {
   display: inline-block;
@@ -1025,4 +1033,299 @@ body {
     max-width: 560px;
     width: 100%;
   }
+}
+
+/* ===== CONTACT progressive reveal (bare fields) ===== */
+
+/* Ekstra spacing fra sektionen ovenover */
+.contactSection {
+  margin-top: clamp(40px, 14vh, 100px);
+}
+
+/* Titel alignment */
+.contactTitle {
+  text-align: center;
+}
+
+.contactTitle h1 {
+  margin: 0 0 10px;
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.fade {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.fade.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Formular container */
+.contactFormBare {
+  display: grid;
+  gap: 10px;
+  max-width: 880px;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto; /* center the form block */
+}
+
+/* Reveal-blokke (skjulte indtil .in) */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.35s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+  max-height: 500px;
+  pointer-events: auto;
+  margin-top: 6px;
+}
+
+/* Felter */
+.field {
+  display: grid;
+  gap: 8px;
+}
+.field span {
+  font-weight: 600;
+  opacity: 0.95;
+  font-size: 1rem;
+}
+.contactFormBare input,
+.contactFormBare textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: saturate(105%) blur(80px);
+  color: var(--txt);
+  outline: none;
+}
+.contactFormBare input::placeholder,
+.contactFormBare textarea::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sendBtnBare {
+  margin-top: 8px;
+  padding: 14px 16px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: #fff; /* solid hvid baggrund */
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+/* Gradient-tekst */
+.sendBtnBare .gradText {
+  display: inline-block;
+  background-image: linear-gradient(135deg, #fbc2eb, #a1c4fd, #fee38a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important; /* Safari */
+  color: transparent !important; /* fallback / override */
+}
+
+.sendBtnBare:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.sendBtnBare:active {
+  transform: translateY(1px);
+}
+
+/* Honeypot (skjult felt) */
+.hp {
+  position: absolute !important;
+  left: -99999px !important;
+  opacity: 0 !important;
+  height: 0 !important;
+}
+
+/* Feedback beskeder */
+.toast {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+.toast.ok {
+  background: rgba(67, 181, 129, 0.18);
+  border: 1px solid rgba(67, 181, 129, 0.35);
+}
+.toast.err {
+  background: rgba(229, 76, 76, 0.18);
+  border: 1px solid rgba(229, 76, 76, 0.35);
+}
+
+/* Popup overlay */
+.popup {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Selve boksen */
+.popupInner {
+  background: #fff;
+  color: #121212;
+  padding: 24px 32px;
+  border-radius: 16px;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.35s ease;
+}
+.popupInner h3 {
+  margin: 0 0 8px;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+.popupInner p {
+  margin: 0;
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===== Pin + parallax fade-in ===== */
+.contactPin {
+  --cProg: 0; /* sættes via JS 0..1 */
+}
+
+/* Sticky viewport under navbar */
+.contactViewport {
+  position: sticky;
+  top: calc(var(--navH) + 100px); /* was: var(--navH) + 100px */
+  min-height: calc(100vh - var(--navH));
+  display: grid;
+  align-content: start;
+}
+
+/* Parallax wrappers */
+.contactMotion {
+  will-change: transform, opacity;
+  transition: transform 120ms linear, opacity 120ms linear;
+}
+
+/* Titel glider mere */
+.contactMotion--title {
+  transform: translateY(calc((1 - var(--cProg)) * 24px));
+  opacity: calc(0.25 + var(--cProg) * 0.75);
+}
+
+/* Formular glider lidt */
+.contactMotion--form {
+  transform: translateY(calc((1 - var(--cProg)) * 18px));
+  opacity: calc(0.2 + var(--cProg) * 0.8);
+}
+
+/* Reveal-felter – roligere fade */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.55s ease, transform 0.55s ease, max-height 0.55s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+  max-height: 500px;
+  pointer-events: auto;
+  margin-top: 8px;
+}
+
+/* Faster motion */
+.contactMotion {
+  transition: transform 90ms linear, opacity 90ms linear;
+}
+
+/* When section is pinned, snap to full opacity */
+.contactPin.is-pinned .contactMotion--title,
+.contactPin.is-pinned .contactMotion--form {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Speed up reveals */
+.reveal {
+  transition: opacity 0.28s ease, transform 0.28s ease, max-height 0.28s ease;
+}
+
+/* Når sektionen er pinned: titlen bliver synlig */
+.contactPin .contactMotion--title {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.contactPin.is-pinned .contactMotion--title {
+  opacity: 1;
+  transform: none;
+}
+
+#contact {
+  scroll-margin-top: calc(var(--navH) + 8px);
+}
+
+/* Invalid field visuals */
+.contactFormBare input.invalid,
+.contactFormBare textarea.invalid {
+  border-color: rgba(229, 76, 76, 0.9);
+  background: rgba(229, 76, 76, 0.12);
+  box-shadow: inset 0 0 0 3px rgba(229, 76, 76, 0.18);
+}
+
+.fieldError {
+  color: #ffb4b4;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  line-height: 1.3;
+  display: block;
+}
+
+/* Optional: nicer focus ring for valid fields */
+.contactFormBare input:focus:not(.invalid),
+.contactFormBare textarea:focus:not(.invalid) {
+  box-shadow: inset 0 0 0 3px rgba(171, 231, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.28);
 }
