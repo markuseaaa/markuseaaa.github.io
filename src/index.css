@@ -113,11 +113,7 @@ body {
   gap: 16px;
   margin-top: 12px;
 }
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+
 .tile {
   position: relative;
   overflow: hidden;
@@ -227,12 +223,12 @@ body {
 @keyframes logoGlow {
   0%,
   100% {
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.25))
-      drop-shadow(0 0 6px rgba(255, 255, 255, 0.18));
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.45))
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
   }
   50% {
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.13))
-      drop-shadow(0 0 10px rgba(255, 255, 255, 0.08));
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.55))
+      drop-shadow(0 0 20px rgba(255, 255, 255, 0.35));
   }
 }
 
@@ -254,12 +250,13 @@ body {
   letter-spacing: 0.02em;
   padding: 6px 2px;
   transition: opacity 0.2s ease, text-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .navlink:hover,
 .navlink.active {
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
-    0 0 10px rgba(255, 255, 255, 0.25);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+    0 0 18px rgba(255, 255, 255, 0.4);
 }
 
 .social {
@@ -283,8 +280,8 @@ body {
 }
 
 .social:hover svg {
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4))
-    drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.55))
+    drop-shadow(0 0 16px rgba(255, 255, 255, 0.35));
 }
 
 .navRight {
@@ -341,48 +338,38 @@ body {
   transform: rotate(-45deg);
 }
 
-@media (max-width: 860px) {
-  /* Toplinjen: logo til venstre, burger til højre */
-  .navInner {
-    position: relative; /* anchor for absolutely positioned dropdown */
-    display: flex;
-    justify-content: space-between; /* logo left, burger right */
-    align-items: center;
-  }
+/* Skjul center-links i baren på mobil (vi bruger dropdown) */
+.navCenter {
+  position: absolute; /* anchor: .navInner */
+  top: calc(100% + 8px); /* lige under navbaren */
+  right: 20px; /* hæng i højre side */
+  left: auto; /* IMPORTANT: fjern centrering */
+  width: min(78vw, 260px);
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  text-align: right; /* højrejustér tekst/links */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  backdrop-filter: saturate(135%) blur(18px);
+  -webkit-backdrop-filter: saturate(135%) blur(18px);
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1001;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.navCenter.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
 
-  /* Skjul center-links i baren på mobil (vi bruger dropdown) */
-  .navCenter {
-    position: absolute; /* anchor: .navInner */
-    top: calc(100% + 8px); /* lige under navbaren */
-    right: 20px; /* hæng i højre side */
-    left: auto; /* IMPORTANT: fjern centrering */
-    width: min(78vw, 260px);
-    display: grid;
-    gap: 10px;
-    padding: 14px;
-    text-align: right; /* højrejustér tekst/links */
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 14px;
-    backdrop-filter: saturate(135%) blur(18px);
-    -webkit-backdrop-filter: saturate(135%) blur(18px);
-    transform: translateY(-8px);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 1001;
-    transition: opacity 0.18s ease, transform 0.18s ease;
-  }
-  .navCenter.open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Burger synlig – skub helt til højre */
-  .navToggle {
-    display: block;
-    margin-left: auto; /* hold den i højre side */
-  }
+/* Burger synlig – skub helt til højre */
+.navToggle {
+  display: block;
+  margin-left: auto; /* hold den i højre side */
 }
 
 /* keep anchors clear of the sticky navbar */
@@ -444,33 +431,33 @@ body {
   position: relative;
 }
 .heroCenter .title {
-  font-size: clamp(3rem, 8vw, 8rem);
+  font-size: clamp(2.5rem, 8vw, 8rem);
   margin: 0;
   line-height: 1.05;
   letter-spacing: -0.03em;
   margin-bottom: 20px;
   font-weight: 1000;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
-    0 0 16px rgba(255, 255, 255, 0.2), 0 0 24px rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.7),
+    0 0 28px rgba(255, 255, 255, 0.5), 0 0 36px rgba(255, 255, 255, 0.4);
   animation: subtleGlow 4s ease-in-out infinite;
 }
 
 @keyframes subtleGlow {
   0%,
   100% {
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.2),
-      0 0 6px rgba(255, 255, 255, 0.1);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
+      0 0 12px rgba(255, 255, 255, 0.25);
   }
   50% {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
-      0 0 10px rgba(255, 255, 255, 0.25);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.65),
+      0 0 20px rgba(255, 255, 255, 0.45);
   }
 }
 
 .heroCenter .subtitle {
   margin: 6px 0 0;
   line-height: 1.25;
-  font-size: 2.5rem;
+  font-size: clamp(1.2rem, 4vw, 2.5rem); /* skalerer fra mobil → desktop */
   margin-bottom: 270px;
 }
 
@@ -728,15 +715,8 @@ body {
   align-items: center;
 }
 
-@media (min-width: 980px) {
-  .proj-body {
-    grid-template-columns: 1.25fr 1fr; /* image left, info right */
-    gap: clamp(18px, 3vw, 30px);
-  }
-}
-
 .proj-media {
-  width: 100%;
+  width: 800px;
   height: min(52vh, 560px);
   border-radius: 28px;
   overflow: hidden;
@@ -761,7 +741,6 @@ body {
 }
 .proj-desc {
   margin: 0 0 14px;
-  opacity: 0.95;
 }
 
 .proj-sectionTitle {
@@ -837,7 +816,7 @@ body {
 }
 
 .skillsTitle {
-  font-size: clamp(3rem, 8vw, 8rem);
+  font-size: clamp(5rem, 8vw, 8rem);
   font-weight: 900;
   margin: 0 0 12px;
 }
@@ -846,17 +825,6 @@ body {
   font-size: clamp(20px, 1.6vw, 25px);
   opacity: 0.85;
   line-height: 1.6;
-}
-
-/* Responsivitet */
-@media (max-width: 640px) {
-  .wheelItem img {
-    width: 72px;
-    height: 72px;
-  }
-  .skillsTitle {
-    font-size: 28px;
-  }
 }
 
 .aboutWords {
@@ -921,7 +889,8 @@ body {
   font-weight: 900;
   letter-spacing: -0.02em;
   white-space: nowrap;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 18px rgba(255, 255, 255, 0.2);
   will-change: transform, opacity;
   pointer-events: none;
   user-select: none;
@@ -1016,26 +985,6 @@ body {
   margin-top: -5px; /* tighter to the title */
   margin-bottom: 10px; /* sits higher above the grid */
 }
-
-@media (max-width: 980px) {
-  :root {
-    --pinDur: 7.5;
-  } /* a touch longer hold on small screens */
-  .aw-grid {
-    grid-template-columns: 1fr;
-  }
-  .aw-photo {
-    order: -1;
-  }
-  .aw-photo,
-  .aw-card {
-    justify-self: center;
-    max-width: 560px;
-    width: 100%;
-  }
-}
-
-/* ===== CONTACT progressive reveal (bare fields) ===== */
 
 /* Ekstra spacing fra sektionen ovenover */
 .contactSection {
@@ -1340,6 +1289,19 @@ body {
   margin-top: -80px;
 }
 
+.projectDetail .projectDetail-body.glass {
+  padding: 24px 28px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(40px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+}
+
 .projectDetail-title {
   font-size: clamp(3rem, 8vw, 8rem);
   font-weight: 900;
@@ -1354,32 +1316,37 @@ body {
   align-items: stretch;
 }
 
-@media (min-width: 900px) {
-  .projectDetail-grid {
-    grid-template-columns: 1.2fr 1fr; /* billede venstre, tekst højre */
-    gap: 48px;
-  }
-}
-
 .projectDetail-figure {
   margin: 0;
-  border-radius: 24px;
-  overflow: hidden;
+  padding: 0;
+  border-radius: 24px; /* ydre runding */
+  overflow: hidden; /* så billedet klippes i kanterne */
   border: 1px solid rgba(255, 255, 255, 0.14);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  height: 100%;
 }
 
 .projectDetail-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: 500px; /* bredde på desktop */
   max-height: 450px; /* højde på desktop */
   object-fit: cover;
   display: block;
   border-radius: 20px;
   transition: transform 0.4s ease;
+}
+
+.projectDetail-figure img.projectDetail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
 }
 
 /* Glasscard på teksten */
@@ -1393,16 +1360,9 @@ body {
   justify-content: center;
 }
 
-@media (max-width: 900px) {
-  .projectDetail-image {
-    max-width: 100%; /* fylder hele bredden på mobil */
-    max-height: 320px;
-  }
-}
-
 .projectDetail-tags {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   opacity: 0.8;
   margin: 0 0 12px;
 }
@@ -1428,4 +1388,349 @@ body {
   z-index: 4000;
   background: #000; /* starter HELT sort */
   pointer-events: none; /* så den ikke blokerer klik */
+}
+
+/* ===========
+   RESPONSIVE (simpel)
+   ===========*/
+
+/* ===========
+   DESKTOP RESETS (navbar + projekter)
+   ===========*/
+
+/* Navbar tilbage som vandret menu på desktop */
+@media (min-width: 901px) {
+  .navCenter {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 90px;
+    align-items: center;
+
+    /* nulstil mobil-dropdown styles */
+    top: auto;
+    right: auto;
+    width: auto;
+    padding: 0;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transform-origin: center;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .navToggle {
+    display: none; /* ingen burger på desktop */
+  }
+}
+
+/* Projekter tilbage til desktop-opsætning */
+@media (min-width: 980px) {
+  .proj-sectionTitle {
+    top: 5vh; /* lås overskrift højere oppe som før */
+    left: clamp(20px, 5vw, 80px);
+    padding-left: 60px;
+  }
+
+  .proj-stack {
+    height: 78vh; /* synligt vindue som før */
+  }
+
+  .proj-slide {
+    padding-top: 15vh; /* som før – giver luft over indholdet */
+    padding-bottom: 0;
+  }
+
+  .proj-media {
+    height: min(52vh, 560px);
+    border-radius: 28px;
+    width: 100%;
+  }
+
+  .proj-body {
+    grid-template-columns: 1.25fr 1fr; /* billede venstre, tekst højre */
+    gap: clamp(18px, 3vw, 30px);
+    align-items: center;
+  }
+}
+
+/* (valgfrit) generisk grid tilbage på desktop/tablet */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .aw-contentOverlay {
+    z-index: 2; /* content over swarmen */
+  }
+}
+
+/* =========================
+   TABLET + MOBIL (≤ 900px)
+   ========================= */
+@media (max-width: 900px) {
+  /* Navbar (dropdown kun på mobil/tablet) */
+  .navInner {
+    position: relative;
+    justify-content: space-between;
+  }
+  .navToggle {
+    display: block;
+    width: 40px;
+    height: 34px;
+    margin-left: auto;
+  }
+  .navCenter {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 20px;
+    left: auto;
+    width: min(78vw, 260px);
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    text-align: right;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    backdrop-filter: saturate(135%) blur(18px);
+    -webkit-backdrop-filter: saturate(135%) blur(18px);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .navCenter.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Hero */
+  .heroFull {
+    min-height: 92vh;
+  }
+  .heroCenter .title {
+    font-size: clamp(2rem, 8.5vw, 4.6rem);
+  }
+  .heroCenter .subtitle {
+    font-size: clamp(1.05rem, 3.8vw, 1.6rem);
+    margin-bottom: 120px;
+  }
+
+  /* Skills-hjul mindre */
+  .wheelItem img {
+    width: 64px;
+    height: 64px;
+  }
+  .wheelCenterContent {
+    max-width: 340px;
+  }
+  .skillsSubtitle {
+    font-size: clamp(0.95rem, 3.2vw, 1.1rem);
+  }
+
+  /* Projekter — titel låses længere nede, slides stopper højere (så “Læs mere” er synlig) */
+  .proj-sectionTitle {
+    top: 12vh;
+  }
+  .proj-stack {
+    height: 64vh;
+  }
+  .proj-slide {
+    padding-top: 9vh;
+    padding-bottom: 18vh;
+  }
+  .proj-media {
+    height: min(40vh, 360px);
+    width: 90%;
+  }
+
+  /* Om mig — ord lidt mindre */
+  .wordsLayer .word {
+    font-size: clamp(14px, 4.8vw, 26px);
+  }
+
+  /* Contact — skub længere ned */
+  .contactSection {
+    margin-top: clamp(80px, 18vh, 140px);
+  }
+  .contactViewport {
+    top: calc(var(--navH) + 160px);
+  }
+
+  /* Project Detail (stack) */
+  .projectDetail {
+    margin-top: -40px;
+    gap: 28px;
+    padding: 0 16px;
+  }
+  .projectDetail-title {
+    font-size: clamp(2rem, 7.5vw, 3.6rem);
+    margin-bottom: 6px;
+  }
+  .projectDetail-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .projectDetail-figure {
+    height: clamp(44vh, 52vw, 56vh);
+  }
+  .projectDetail-figure img.projectDetail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .projectDetail .projectDetail-body.glass,
+  .projectDetail-body {
+    padding: 18px 16px;
+    border-radius: 16px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .projectDetail-tags {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .projectDetail-footer {
+    margin-top: 6px;
+  }
+  .backLink {
+    display: inline-block;
+    padding: 10px 12px;
+  }
+}
+
+/* =========================
+   TELEFON (≤ 600px)
+   ========================= */
+@media (max-width: 600px) {
+  /* Navbar dropdown lidt smal */
+  .navToggle {
+    width: 42px;
+    height: 36px;
+  }
+  .navCenter {
+    right: 14px;
+    width: min(86vw, 260px);
+    gap: 8px;
+    padding: 12px;
+  }
+
+  /* Hero endnu tighter */
+  .heroCenter .title {
+    font-size: clamp(1.9rem, 9.2vw, 3.2rem);
+    margin-top: -100px;
+  }
+  .heroCenter .subtitle {
+    margin-bottom: 200px;
+  }
+
+  /* Skills endnu mindre */
+  .wheelItem img {
+    width: 56px;
+    height: 56px;
+  }
+  .wheelCenterContent {
+    max-width: 300px;
+  }
+
+  /* Projekter – maks plads til knappen */
+  .proj-sectionTitle {
+    top: 14vh;
+    padding-left: 15px;
+  }
+  .proj-stack {
+    height: 60vh;
+  }
+  .proj-slide {
+    padding-top: 8vh;
+    padding-bottom: 22vh;
+  }
+  .proj-media {
+    height: clamp(220px, 42vw, 320px);
+  }
+
+  /* Contact lidt senere */
+  .contactSection {
+    margin-top: clamp(100px, 22vh, 160px);
+  }
+  .contactViewport {
+    top: calc(var(--navH) + 180px);
+  }
+
+  /* Om mig ord lidt mindre */
+  .wordsLayer .word {
+    font-size: clamp(12px, 4.6vw, 22px);
+  }
+
+  /* Project Detail afrunding/padding */
+  .projectDetail {
+    padding: 0 12px;
+  }
+  .projectDetail-figure {
+    border-radius: 14px;
+  }
+  .projectDetail .projectDetail-body.glass,
+  .projectDetail-body {
+    border-radius: 14px;
+    padding: 16px 14px;
+  }
+
+  /* About (mobil): billede først, lavere højde og tekst under */
+  .aw-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .aboutWords {
+    margin-top: 140px; /* was 80px — push it down more */
+  }
+  .aw-stage {
+    top: calc(var(--navH) + 100px); /* extra offset on mobile */
+    height: calc(100vh - var(--navH) - 48px);
+  }
+  .aboutWords .skillsTitle {
+    margin-bottom: 8px;
+  }
+  .aboutWords .skillsSubtitle {
+    font-size: clamp(1rem, 4.5vw, 1.2rem); /* mindre og mere kompakt */
+    line-height: 1.4;
+    opacity: 0.85;
+    margin-bottom: 18px;
+  }
+  .aw-photo {
+    order: -1; /* image first */
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    aspect-ratio: 4 / 5; /* lavere/strammere end desktop */
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .aw-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .aw-card {
+    padding: clamp(16px, 4vw, 24px) !important;
+  }
+  .aw-card .aboutLead {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+  .aw-card .aboutBody {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .aboutWords .skillsSubtitle {
+    font-size: clamp(18px, 4.2vw, 22px);
+  }
 }
