@@ -7,7 +7,7 @@ import Footer from "./components/Footer.jsx";
 import AnimatedGradientBG from "./components/AnimatedGradientBG.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import Shape from "./components/Shape.jsx";
-import bubbleUrl from "./assets/bubble.png";
+import bubbleUrl from "/public/assets/bubble.png";
 
 export default function App() {
   const location = useLocation();

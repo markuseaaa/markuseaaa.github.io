@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-// src/pages/HomePage.jsx
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { motion } from "framer-motion";
@@ -7,7 +6,7 @@ import { motion } from "framer-motion";
 import TypingSubtitle from "../components/TypingSubtitle.jsx";
 import ProjectSection from "../components/ProjectSection.jsx";
 import Skills from "../components/Skills.jsx";
-import About from "../assets/About.jsx";
+import About from "../components/About.jsx";
 import Contact from "../components/Contact.jsx";
 
 // Læs navbar-højde fra CSS variabel

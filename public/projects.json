@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "slug": "radar-aarhus",
+    "title": "Radar Aarhus",
+    "image": "/assets/radar.png",
+    "tags": "HTML, CSS, Webdesign",
+    "shortDesc": "Et redesign af Radars hjemmeside i Aarhus med fokus på musikelskere og upcoming artister.",
+    "longDesc": "Radar-projektet var en øvelse i klassisk frontend, hvor jeg designede og kodede en ny hjemmeside for Radar i Aarhus – et spillested kendt for live musik og upcoming artister. Projektet var bygget i ren HTML og CSS, hvilket gav mig mulighed for at fordybe mig i grundlæggende struktur, semantik og responsivt layout uden brug af frameworks. Jeg arbejdede især med grid/flexbox, typografi og farvevalg, og lærte meget om, hvordan man kombinerer et moderne design med brugervenlighed. Erfaringen styrkede min forståelse af opbygning af websites helt fra bunden."
+  },
+  {
+    "id": 2,
+    "slug": "kokkenes-koekken",
+    "title": "Kokkenes Køkken",
+    "image": "/assets/kk.png",
+    "tags": "WordPress, Designmanual, Branding",
+    "shortDesc": "Et igangværende projekt med fokus på at tilpasse Kokkenes Køkkens hjemmeside til en fast designmanual.",
+    "longDesc": "Mit nuværende projekt handler om at modernisere Kokkenes Køkkens hjemmeside. Opgaven består i at holde sig stramt indenfor virksomhedens designmanual og sikre en WordPress-venlig opbygning, så indhold kan vedligeholdes let af ikke-tekniske medarbejdere. Jeg arbejder med typografi, farvepalet og billedstil for at skabe et sammenhængende udtryk, og samtidig forbedres brugeroplevelsen gennem bedre struktur, navigation og mobilvenlighed. Projektet har givet mig erfaring med at omsætte en eksisterende visuel identitet til et digitalt univers, hvor både design og funktionalitet er i centrum."
+  },
+  {
+    "id": 3,
+    "slug": "kpop-bannere",
+    "title": "K-pop Bannere",
+    "image": "/assets/bannere.png",
+    "tags": "Grafisk design, Event, K-pop",
+    "shortDesc": "Design af bannere til K-pop koncerter i Danmark – visuelt udtryk tilpasset fans og stemning.",
+    "longDesc": "I de seneste år har jeg designet bannere til K-pop koncerter i Danmark. Opgaven har været at fange og visualisere stemningen fra artisterne og den særlige kultur, som fanskaren omkring K-pop repræsenterer. Jeg har arbejdet med at skabe design, der både afspejler den enkelte gruppes personlighed og samtidig tiltaler et bredt publikum. Denne proces har styrket min evne til at følge en bestemt vibe, være kreativ indenfor faste rammer og skabe grafiske løsninger, der fungerer i praksis til live events. Projektet har givet mig værdifuld erfaring i at kombinere æstetik med publikumsforståelse."
+  }
+]

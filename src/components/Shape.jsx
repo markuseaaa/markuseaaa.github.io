@@ -96,7 +96,7 @@ function BlobsController({
   warmupSeconds = 0.5, // ramp-in to avoid launch burst
   maxSpeedFactor = 1.3, // cap at baseSpeed * Hpx * this factor
   minSpeedFactor = 0.22, // never go below this fraction of base speed
-  imgSrc = "../assets/bubble.png",
+  imgSrc = "/public/assets/bubble.png",
   imgOpacity = 0.7, // <<< NEW
 }) {
   const { viewport } = useThree();
@@ -393,7 +393,7 @@ export default function FloatingBlobsPastelCirclesPageWorld({
   warmupSeconds = 0.5,
   maxSpeedFactor = 1.3,
   minSpeedFactor = 0.22,
-  imgSrc = "../assets/bubble.png",
+  imgSrc = "/public/assets/bubble.png",
   imgOpacity = 0.7, // <<< exposed
 }) {
   const pageHeightPx = usePageHeight();

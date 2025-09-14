@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate, NavLink } from "react-router";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-import logo from "../assets/MKLOGO.svg";
+import logo from "/public/assets/MKLOGO.svg";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);

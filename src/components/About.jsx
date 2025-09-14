@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import mePortrait from "../assets/markus-portrait.jpg";
+import mePortrait from "/public/assets/markus-portrait.jpg";
 
 /** EXACT order, one word per row, alternating side */
 const WORDS_TEXTS = [
