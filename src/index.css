@@ -1412,6 +1412,18 @@ body {
     gap: clamp(18px, 3vw, 30px);
     align-items: center;
   }
+  .projectDetail-grid {
+    grid-template-columns: 1.25fr 1fr; /* billede større, tekst ved siden af */
+    gap: clamp(18px, 3vw, 30px);
+    align-items: center;
+  }
+
+  /* lås billedets ønskede størrelse og runding på desktop */
+  .projectDetail-image {
+    max-width: 500px;
+    max-height: 450px;
+    border-radius: 20px;
+  }
 }
 
 /* (valgfrit) generisk grid tilbage på desktop/tablet */

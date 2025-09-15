@@ -6,7 +6,7 @@
     "image": "/assets/radar.png",
     "tags": "HTML, CSS, Webdesign",
     "shortDesc": "Et redesign af Radars hjemmeside i Aarhus med fokus på musikelskere og upcoming artister.",
-    "longDesc": "Radar-projektet var en øvelse i klassisk frontend, hvor jeg designede og kodede en ny hjemmeside for Radar i Aarhus – et spillested kendt for live musik og upcoming artister. Projektet var bygget i ren HTML og CSS, hvilket gav mig mulighed for at fordybe mig i grundlæggende struktur, semantik og responsivt layout uden brug af frameworks. Jeg arbejdede især med grid/flexbox, typografi og farvevalg, og lærte meget om, hvordan man kombinerer et moderne design med brugervenlighed. Erfaringen styrkede min forståelse af opbygning af websites helt fra bunden."
+    "longDesc": "Radar-projektet var en øvelse i klassisk frontend, hvor jeg designede og kodede en ny hjemmeside for Radar i Aarhus – et spillested kendt for live musik og upcoming artister. Projektet var bygget i HTML og CSS, hvilket gav mig mulighed for at fordybe mig i grundlæggende struktur, semantik og responsivt layout uden brug af frameworks. Jeg arbejdede især med grid/flexbox, typografi og farvevalg, og lærte meget om, hvordan man kombinerer et moderne design med brugervenlighed. Erfaringen styrkede min forståelse af opbygning af websites helt fra bunden."
   },
   {
     "id": 2,
