@@ -1,16 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import reactlogo from "/public/assets/react.png";
-import jslogo from "/public/assets/javascript.png";
-import csslogo from "/public/assets/css.png";
-import htmllogo from "/public/assets/html.png";
-import githublogo from "/public/assets/github.png";
-import figmalogo from "/public/assets/figma.svg";
-import premiereprologo from "/public/assets/premierepro.png";
-import vscodelogo from "/public/assets/vsc.png";
-import canvalogo from "/public/assets/canva.svg";
-import adobelogo from "/public/assets/adobe.png";
+import reactlogo from "/assets/react.png";
+import jslogo from "/assets/javascript.png";
+import csslogo from "/assets/css.png";
+import htmllogo from "/assets/html.png";
+import githublogo from "/assets/github.png";
+import figmalogo from "/assets/figma.svg";
+import premiereprologo from "/assets/premierepro.png";
+import vscodelogo from "/assets/vsc.png";
+import canvalogo from "/assets/canva.svg";
+import adobelogo from "/assets/adobe.png";
 
 const ICONS = [
   { src: reactlogo, alt: "React", label: "React" },
@@ -44,7 +44,7 @@ export default function Skills({
 
       if (containerW <= 600) {
         // Telefon
-        setRadius(165); // lille radius
+        setRadius(140); // lille radius
         setIconSize(52);
       } else if (containerW <= 900) {
         // Tablet

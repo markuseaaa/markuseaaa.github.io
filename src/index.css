@@ -1639,6 +1639,15 @@ body {
     max-width: 300px;
   }
 
+  .skillsSection .wheelWrap {
+    width: 100vw;
+    margin-left: calc(50% - 50vw); /* full-bleed hack */
+  }
+  /* Hvis .skillsInner har padding, neutralisér den for wheelWrap */
+  .skillsSection .skillsInner {
+    padding-inline: 0;
+  }
+
   /* Projekter – maks plads til knappen */
   .proj-sectionTitle {
     top: 14vh;
@@ -1732,5 +1741,11 @@ body {
   }
   .aboutWords .skillsSubtitle {
     font-size: clamp(18px, 4.2vw, 22px);
+  }
+  .skillsSection .skillsTitle,
+  .aboutWords .skillsTitle {
+    font-size: clamp(2.5rem, 7.2vw, 3.3rem);
+    line-height: 1.06;
+    margin-bottom: 8px;
   }
 }
