@@ -33,10 +33,7 @@ export default function ProjectDetail() {
 
   if (err) {
     return (
-      <section
-        className="projectDetail container"
-        style={{ padding: "80px 24px" }}
-      >
+      <section className="projectDetail" style={{ padding: "80px 24px" }}>
         <h1 className="proj-title">Fejl</h1>
         <p>{err}</p>
         <button className="backLink" onClick={backToProjects}>

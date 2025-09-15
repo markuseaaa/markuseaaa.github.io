@@ -1,3 +1,4 @@
+// src/components/Contact.jsx
 import { useEffect, useRef, useState } from "react";
 
 export default function Contact() {
@@ -6,7 +7,7 @@ export default function Contact() {
     email: "",
     subject: "",
     message: "",
-    site: "",
+    site: "", // honeypot
   });
   const [touched, setTouched] = useState({
     name: false,
@@ -19,8 +20,10 @@ export default function Contact() {
 
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
+
   const [titleIn, setTitleIn] = useState(false);
   const [pinned, setPinned] = useState(false);
+  const [prog, setProg] = useState(0); // 0..1 global progress for reveals
 
   useEffect(() => {
     // Title observer
@@ -37,6 +40,7 @@ export default function Contact() {
     const onScroll = () => {
       const sec = sectionRef.current;
       if (!sec) return;
+
       const navH =
         parseInt(
           getComputedStyle(document.documentElement).getPropertyValue("--navH")
@@ -48,17 +52,22 @@ export default function Contact() {
       const nowPinned = r.top <= navH && r.bottom - navH >= viewH;
       if (nowPinned !== pinned) setPinned(nowPinned);
 
+      // Start progress a bit earlier so section appears sooner
+      const EARLY_PX = 120; // tweak 80–160 to taste
       const total = r.height + viewH;
-      const passed = Math.min(Math.max(viewH - r.top, 0), total);
-      let p = Math.max(0, Math.min(1, passed / total));
+      const passed = Math.min(Math.max(viewH - (r.top + EARLY_PX), 0), total);
+      const p = Math.max(0, Math.min(1, passed / total));
+      setProg(p);
 
       sec.classList.toggle("is-pinned", nowPinned);
+      sec.classList.toggle("has-entered", p > 0.06); // optional CSS hook
       sec.style.setProperty("--cProg", String(p));
     };
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+
     return () => {
       io.disconnect();
       window.removeEventListener("scroll", onScroll);
@@ -83,8 +92,8 @@ export default function Contact() {
   };
   const canSubmit = !errors.name && !errors.email && !errors.message;
 
-  // Progressive reveal (unchanged)
-  const revealName = titleIn && pinned;
+  // Progressive reveal (now based on overall progress instead of pinned)
+  const revealName = prog > 0.06;
   const typedName = form.name.trim().length > 0;
   const revealEmail = revealName && typedName;
   const typedEmail = form.email.trim().length > 0;
@@ -96,6 +105,7 @@ export default function Contact() {
 
   async function onSubmit(e) {
     e.preventDefault();
+
     // mark all as touched to show errors if any
     setTouched({
       name: true,
@@ -146,16 +156,12 @@ export default function Contact() {
   }
 
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="contactSection pageContent contactPin"
-    >
+    <section ref={sectionRef} className="contactSection pageContent contactPin">
       {/* Title */}
       <div className="contactMotion contactMotion--title">
         <header
           ref={titleRef}
-          className={`contactTitle fade ${titleIn ? "in" : ""}`}
+          className={`contactTitle fade ${titleIn || prog > 0.06 ? "in" : ""}`}
         >
           <h1>Kontakt</h1>
         </header>

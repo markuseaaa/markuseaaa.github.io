@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import mePortrait from "/public/assets/markus-portrait.jpg";
 
 /** EXACT order, one word per row, alternating side */
 const WORDS_TEXTS = [
@@ -144,7 +143,7 @@ export default function AboutWordsParallax() {
             <div className="aw-grid">
               <figure className="aw-photo">
                 <img
-                  src={mePortrait}
+                  src="/assets/markus-portrait.jpg"
                   alt="Portræt af Markus Kristensen"
                   className="aw-img"
                 />
@@ -153,14 +152,14 @@ export default function AboutWordsParallax() {
 
               <div className="glass aw-card">
                 <p className="aboutLead">
-                  Multimediedesigner fra Aarhus med fokus på{" "}
-                  <strong>parallax</strong>, <strong>micro-interactions</strong>{" "}
+                  Multimediedesign studerende fra Aarhus med fokus på{" "}
+                  <strong>effekter</strong>, <strong>impactful design</strong>{" "}
                   og <strong>moderne UI</strong>.
                 </p>
                 <p className="aboutBody muted">
                   Jeg arbejder struktureret med rene komponenter, tydelig
-                  interaktion og performance. Ofte med 3D/animation – altid med
-                  læsbarhed og flow i fokus. <br />
+                  interaktion og moderne design. Ofte med gradueringer – altid
+                  med læsbarhed og flow i fokus. <br />
                   <br />
                   Når jeg ikke designer eller koder, er min store passion Kpop
                   (koreansk popmusik). Jeg er vild med de farverige

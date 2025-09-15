@@ -61,7 +61,6 @@ function ProjectSlide({ project, index, total, progress }) {
       className="proj-slide"
       style={{ y, opacity, zIndex: 10 + index }}
     >
-      <div className="proj-sep" />
       <div className="proj-body">
         <div className="proj-media">
           <img

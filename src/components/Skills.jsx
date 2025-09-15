@@ -1,28 +1,18 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import reactlogo from "/assets/react.png";
-import jslogo from "/assets/javascript.png";
-import csslogo from "/assets/css.png";
-import htmllogo from "/assets/html.png";
-import githublogo from "/assets/github.png";
-import figmalogo from "/assets/figma.svg";
-import premiereprologo from "/assets/premierepro.png";
-import vscodelogo from "/assets/vsc.png";
-import canvalogo from "/assets/canva.svg";
-import adobelogo from "/assets/adobe.png";
 
 const ICONS = [
-  { src: reactlogo, alt: "React", label: "React" },
-  { src: jslogo, alt: "JavaScript", label: "JavaScript" },
-  { src: csslogo, alt: "CSS" },
-  { src: htmllogo, alt: "HTML" },
-  { src: githublogo, alt: "GitHub" },
-  { src: figmalogo, alt: "Figma" },
-  { src: premiereprologo, alt: "Premiere Pro" },
-  { src: vscodelogo, alt: "Visual Studio Code" },
-  { src: canvalogo, alt: "Canva" },
-  { src: adobelogo, alt: "Adobe" },
+  { src: "/assets/react.png", alt: "React", label: "React" },
+  { src: "/assets/javascript.png", alt: "JavaScript", label: "JavaScript" },
+  { src: "/assets/css.png", alt: "CSS" },
+  { src: "/assets/html.png", alt: "HTML" },
+  { src: "/assets/github.png", alt: "GitHub" },
+  { src: "/assets/figma.svg", alt: "Figma" },
+  { src: "/assets/premierepro.png", alt: "Premiere Pro" },
+  { src: "/assets/vsc.png", alt: "Visual Studio Code" },
+  { src: "/assets/canva.svg", alt: "Canva" },
+  { src: "/assets/adobe.png", alt: "Adobe" },
 ];
 
 export default function Skills({
@@ -44,7 +34,7 @@ export default function Skills({
 
       if (containerW <= 600) {
         // Telefon
-        setRadius(140); // lille radius
+        setRadius(130); // lille radius
         setIconSize(52);
       } else if (containerW <= 900) {
         // Tablet

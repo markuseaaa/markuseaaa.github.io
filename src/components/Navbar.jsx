@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate, NavLink } from "react-router";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-import logo from "/public/assets/MKLOGO.svg";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -107,7 +106,7 @@ export default function Navbar() {
       <div className="navInner">
         <div className="navLogo">
           <NavLink to="/" aria-label="Forside">
-            <img src={logo} alt="Logo" className="logoImg" />
+            <img src="/assets/MKLOGO.svg" alt="Logo" className="logoImg" />
           </NavLink>
         </div>
 
