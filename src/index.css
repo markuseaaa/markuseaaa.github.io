@@ -1699,7 +1699,7 @@ body {
     margin-top: 140px; /* was 80px — push it down more */
   }
   .aw-stage {
-    top: calc(var(--navH) + 100px); /* extra offset on mobile */
+    top: calc(var(--navH) + 140px); /* extra offset on mobile */
     height: calc(100vh - var(--navH) - 48px);
   }
   .aboutWords .skillsTitle {
