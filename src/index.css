@@ -1649,6 +1649,7 @@ body {
   .aw-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    margin-bottom: 100px;
   }
   .aboutWords {
     margin-top: 140px; /* was 80px — push it down more */
