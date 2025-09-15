@@ -139,7 +139,6 @@ body {
 .tileCaption {
   margin-top: 10px;
   font-size: 0.9rem;
-  opacity: 0.95;
 }
 .shine {
   position: absolute;
@@ -179,7 +178,6 @@ body {
   font-size: 1.4rem;
 }
 .stat span {
-  opacity: 0.9;
   font-size: 0.9rem;
 }
 
@@ -715,7 +713,6 @@ body {
 }
 .proj-tags {
   margin: 0 0 6px;
-  opacity: 0.8;
   font-weight: 600;
 }
 .proj-desc {
@@ -802,7 +799,6 @@ body {
 
 .skillsSubtitle {
   font-size: clamp(20px, 1.6vw, 25px);
-  opacity: 0.85;
   line-height: 1.6;
 }
 
@@ -958,7 +954,6 @@ body {
 .aboutWords .skillsSubtitle {
   font-size: clamp(22px, 1.8vw, 28px);
   line-height: 1.4;
-  opacity: 0.9;
   margin-top: -5px; /* tighter to the title */
   margin-bottom: 10px; /* sits higher above the grid */
 }
@@ -1006,7 +1001,6 @@ body {
 }
 .field span {
   font-weight: 600;
-  opacity: 0.95;
   font-size: 1rem;
 }
 .contactFormBare input,
@@ -1111,7 +1105,6 @@ body {
 .popupInner p {
   margin: 0;
   font-size: 1.2rem;
-  opacity: 0.85;
 }
 
 /* Animations */
@@ -1191,8 +1184,8 @@ body {
 /* When section is pinned, snap to full opacity */
 .contactPin.is-pinned .contactMotion--title,
 .contactPin.is-pinned .contactMotion--form {
-  opacity: 1 !important;
-  transform: none !important;
+  opacity: 1;
+  transform: none;
 }
 
 /* Når sektionen er pinned: titlen bliver synlig */
@@ -1318,7 +1311,6 @@ body {
 .projectDetail-tags {
   font-size: 1.2rem;
   font-weight: 700;
-  opacity: 0.8;
   margin: 0 0 12px;
 }
 
@@ -1328,7 +1320,6 @@ body {
 
 .backLink {
   font-size: 1rem;
-  opacity: 0.8;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
