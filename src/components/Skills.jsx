@@ -34,14 +34,14 @@ export default function Skills({
 
       if (containerW <= 600) {
         // Telefon
-        setRadius(130); // lille radius
+        setRadius(130);
         setIconSize(52);
       } else if (containerW <= 900) {
         // Tablet
-        setRadius(250); // medium radius
+        setRadius(250);
         setIconSize(72);
       } else {
-        // Desktop → samme som din gamle
+        // Desktop
         setRadius(500);
         setIconSize(96);
       }
@@ -104,9 +104,7 @@ export default function Skills({
   return (
     <section className="skillsSection" ref={sectionRef}>
       <div className="skillsInner">
-        {/* Brug minHeight = wheelSize, så wrap ikke klipper */}
         <div className="wheelWrap" style={{ minHeight: wheelSize }}>
-          {/* Selve hjulet */}
           <motion.div
             className="wheel"
             style={{
