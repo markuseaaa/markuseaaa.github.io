@@ -2,7 +2,6 @@
 import { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-/** EXACT order, one word per row, alternating side */
 const WORDS_TEXTS = [
   "Kreativ",
   "Ambitiøs",
@@ -17,13 +16,12 @@ const WORDS_TEXTS = [
 
 /* layout: one lane per word */
 const ROWS = WORDS_TEXTS.length;
-const ROW_GAP = 80; // vertical distance between rows (fits 9 rows nicely)
+const ROW_GAP = 80;
 const LANES = Array.from(
   { length: ROWS },
   (_, i) => (i - (ROWS - 1) / 2) * ROW_GAP
 );
 
-/* one moving word (no randomness) */
 function Word({ cfg, progress }) {
   const { t, side, row, size, inAt, outAt } = cfg;
 
@@ -62,33 +60,30 @@ function Word({ cfg, progress }) {
 export default function AboutWordsParallax() {
   const pinRef = useRef(null);
 
-  // progress 0→1 exactly while the pin wrapper scrolls (see CSS --pinDur)
   const { scrollYProgress } = useScroll({
     target: pinRef,
     offset: ["start start", "end start"],
   });
 
-  // Build a strict sequence: row = index, side alternates, fixed slot gap & travel
   const WORDS = useMemo(() => {
-    const start0 = 0.06; // when first word appears
-    const slotGap = 0.05; // spacing between words (smaller = faster sequence)
-    const travel = 0.18; // how long each word crosses (smaller = faster disappear)
+    const start0 = 0.06;
+    const slotGap = 0.05;
+    const travel = 0.18;
 
     return WORDS_TEXTS.map((t, i) => {
       const inAt = start0 + i * slotGap;
       const outAt = inAt + travel;
       return {
         t,
-        row: i, // one row per word
-        side: i % 2 === 0 ? "L" : "R", // alternate left/right
-        size: 108, // consistent size
+        row: i,
+        side: i % 2 === 0 ? "L" : "R",
+        size: 108,
         inAt,
         outAt,
       };
     });
   }, []);
 
-  // Last exit → reveal right after (no long gap)
   const lastExit = useMemo(
     () => Math.max(...WORDS.map((w) => w.outAt)),
     [WORDS]
@@ -114,14 +109,12 @@ export default function AboutWordsParallax() {
     <section className="aboutWords" aria-labelledby="aboutWordsTitle">
       <div className="aw-pinWrap" ref={pinRef}>
         <div className="aw-stage">
-          {/* 1) Words in strict order */}
           <div className="wordsLayer" aria-hidden="true">
             {WORDS.map((w, i) => (
               <Word key={`${w.t}-${i}`} cfg={w} progress={scrollYProgress} />
             ))}
           </div>
 
-          {/* 2) Content reveals immediately after last word clears */}
           <motion.div
             className="aw-contentOverlay"
             style={{

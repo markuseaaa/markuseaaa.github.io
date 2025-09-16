@@ -61,7 +61,6 @@ export default function ProjectDetail() {
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Sentinel til navbarens transparent/glass logik */}
       <div className="routeTopSentinel" aria-hidden style={{ height: 1 }} />
 
       <h1 className="projectDetail-title">{project.title}</h1>

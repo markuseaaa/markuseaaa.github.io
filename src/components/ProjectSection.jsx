@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 function ProjectSlide({ project, index, total, progress }) {
-  const segments = total + 1; // N slides + 1 tail
+  const segments = total + 1;
   const segSize = 1 / segments;
 
   const start = index * segSize;

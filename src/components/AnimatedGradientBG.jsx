@@ -1,4 +1,3 @@
-// src/components/AnimatedGradientBG.jsx
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 

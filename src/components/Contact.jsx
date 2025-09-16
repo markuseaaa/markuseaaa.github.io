@@ -1,4 +1,3 @@
-// src/components/Contact.jsx
 import { useEffect, useRef, useState } from "react";
 
 export default function Contact() {
@@ -7,7 +6,7 @@ export default function Contact() {
     email: "",
     subject: "",
     message: "",
-    site: "", // honeypot
+    site: "",
   });
   const [touched, setTouched] = useState({
     name: false,
@@ -23,7 +22,7 @@ export default function Contact() {
 
   const [titleIn, setTitleIn] = useState(false);
   const [pinned, setPinned] = useState(false);
-  const [prog, setProg] = useState(0); // 0..1 global progress for reveals
+  const [prog, setProg] = useState(0);
 
   useEffect(() => {
     // Title observer
@@ -52,15 +51,14 @@ export default function Contact() {
       const nowPinned = r.top <= navH && r.bottom - navH >= viewH;
       if (nowPinned !== pinned) setPinned(nowPinned);
 
-      // Start progress a bit earlier so section appears sooner
-      const EARLY_PX = 120; // tweak 80–160 to taste
+      const EARLY_PX = 160;
       const total = r.height + viewH;
       const passed = Math.min(Math.max(viewH - (r.top + EARLY_PX), 0), total);
       const p = Math.max(0, Math.min(1, passed / total));
       setProg(p);
 
       sec.classList.toggle("is-pinned", nowPinned);
-      sec.classList.toggle("has-entered", p > 0.06); // optional CSS hook
+      sec.classList.toggle("has-entered", p > 0.06);
       sec.style.setProperty("--cProg", String(p));
     };
 
@@ -92,7 +90,7 @@ export default function Contact() {
   };
   const canSubmit = !errors.name && !errors.email && !errors.message;
 
-  // Progressive reveal (now based on overall progress instead of pinned)
+  // Progressive reveal
   const revealName = prog > 0.06;
   const typedName = form.name.trim().length > 0;
   const revealEmail = revealName && typedName;
@@ -118,7 +116,7 @@ export default function Contact() {
       setStatus({ sending: false, ok: false, msg: "Udfyld felterne korrekt." });
       return;
     }
-    if (form.site) return; // honeypot
+    if (form.site) return;
 
     setStatus({ sending: true, ok: null, msg: "" });
 
@@ -157,7 +155,6 @@ export default function Contact() {
 
   return (
     <section ref={sectionRef} className="contactSection pageContent contactPin">
-      {/* Title */}
       <div className="contactMotion contactMotion--title">
         <header
           ref={titleRef}
@@ -167,7 +164,6 @@ export default function Contact() {
         </header>
       </div>
 
-      {/* Sticky viewport */}
       <div className="contactViewport">
         <div className="contactMotion contactMotion--form">
           <form className="contactFormBare" onSubmit={onSubmit} noValidate>
@@ -183,7 +179,6 @@ export default function Contact() {
               aria-hidden="true"
             />
 
-            {/* Name */}
             <div
               className={`reveal ${revealName ? "in" : ""}`}
               style={{ transitionDelay: "80ms" }}
@@ -231,7 +226,7 @@ export default function Contact() {
               </label>
             </div>
 
-            {/* Subject (optional) */}
+            {/* Subject */}
             <div
               className={`reveal ${revealSubject ? "in" : ""}`}
               style={{ transitionDelay: "200ms" }}

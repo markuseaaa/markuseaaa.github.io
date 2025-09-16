@@ -29,7 +29,6 @@ export default function Navbar() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  // Observe hero or route sentinel to toggle glass
   useEffect(() => {
     const sentinel =
       document.querySelector(".heroFull") ||
@@ -61,7 +60,6 @@ export default function Navbar() {
     return () => obs.disconnect();
   }, [pathname]);
 
-  // Scroll spy
   useEffect(() => {
     const ids = ["#about", "#projects", "#contact"];
     const opts = {

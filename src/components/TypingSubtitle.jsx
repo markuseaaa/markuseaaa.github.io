@@ -17,7 +17,7 @@ export default function TypingSubtitle({
 }) {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [display, setDisplay] = useState("");
-  const [mode, setMode] = useState("idle"); // idle → typing → deleting
+  const [mode, setMode] = useState("idle");
   const timerRef = useRef();
 
   const phrases = useMemo(
@@ -29,7 +29,6 @@ export default function TypingSubtitle({
     [items]
   );
 
-  // Hook: detect reduced motion
   const [reduceMotion, setReduceMotion] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -39,12 +38,10 @@ export default function TypingSubtitle({
     return () => mq.removeEventListener("change", update);
   }, []);
 
-  // Always clear timers when unmounting
   useEffect(() => {
     return () => clearTimeout(timerRef.current);
   }, []);
 
-  // Typing logic (only runs if not reduced motion)
   useEffect(() => {
     if (reduceMotion || phrases.length === 0) return;
 
@@ -90,7 +87,6 @@ export default function TypingSubtitle({
     reduceMotion,
   ]);
 
-  // If reduced motion → just show first phrase
   const textToShow = reduceMotion ? phrases[0] ?? "" : display;
 
   return (

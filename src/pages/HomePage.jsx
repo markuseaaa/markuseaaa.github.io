@@ -9,7 +9,6 @@ import Skills from "../components/Skills.jsx";
 import About from "../components/About.jsx";
 import Contact from "../components/Contact.jsx";
 
-// Læs navbar-højde fra CSS variabel
 function getNavH() {
   const raw = getComputedStyle(document.documentElement)
     .getPropertyValue("--navH")
@@ -45,14 +44,13 @@ export default function HomePage() {
     if (!target) return;
 
     let tries = 0;
-    const maxTries = 30; // prøv i ~600ms
+    const maxTries = 30;
     const tick = () => {
       const el = document.querySelector(target);
       if (el) {
         const y =
           el.getBoundingClientRect().top + window.scrollY - getNavH() - 8;
         window.scrollTo({ top: y, behavior: "smooth" });
-        // Fjern state så det ikke kører igen
         navigate(location.pathname, { replace: true, state: null });
       } else if (tries++ < maxTries) {
         setTimeout(tick, 20);

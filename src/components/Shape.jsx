@@ -2,7 +2,6 @@ import React, { useMemo, useRef, useEffect, useState, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Billboard, useTexture } from "@react-three/drei";
 
-/* --- Track full document height (updates as content changes) --- */
 function usePageHeight() {
   const [h, setH] = useState(0);
   useEffect(() => {
@@ -30,7 +29,7 @@ function usePageHeight() {
   return h;
 }
 
-/* --- One blob: billboarded PNG with subtle breathing --- */
+/* --- En bobbel --- */
 const Blob = React.forwardRef(function Blob(
   { radiusWorld, imgSrc, imgOpacity = 0.7, wobble = 0.006, phase = 0 },
   ref
@@ -42,7 +41,7 @@ const Blob = React.forwardRef(function Blob(
     if (!inner.current) return;
     const t = clock.getElapsedTime();
     const s = radiusWorld * (1 + wobble * Math.sin(t * 0.8 + phase));
-    inner.current.scale.set(s, s, 1); // keep perfectly round
+    inner.current.scale.set(s, s, 1);
   });
 
   return (
@@ -53,7 +52,7 @@ const Blob = React.forwardRef(function Blob(
           <meshBasicMaterial
             map={tex}
             transparent
-            opacity={imgOpacity} // <<< opacity control
+            opacity={imgOpacity}
             alphaTest={0.01}
             depthWrite={false}
             toneMapped={false}
@@ -64,7 +63,7 @@ const Blob = React.forwardRef(function Blob(
   );
 });
 
-/* --- Hammersley + relaxation to spread initial points nicely --- */
+/* --- Hammersley + relaxation  --- */
 function radicalInverseVdC(bits) {
   bits = (bits << 16) | (bits >>> 16);
   bits = ((bits & 0x55555555) << 1) | ((bits & 0xaaaaaaaa) >>> 1);
@@ -81,7 +80,7 @@ function hammersley2D(i, n, jitter = 0.05) {
   return [u, v];
 }
 
-/* --- Controller: page-wide physics in px; render mapped to viewport slice --- */
+/* --- Controller: render mapped to viewport slice --- */
 function BlobsController({
   count,
   radiusWorlds,
@@ -90,14 +89,14 @@ function BlobsController({
   separationForce = 0.06,
   restitution = 0.85,
   pageHeightPx,
-  spawnMode = "pageTop", // "pageTop" | "viewTop"
-  spawnHeightPx = 600, // px band height for spawning
-  spawnSpacing = 1.5, // min center distance = (ri+rj)*spawnSpacing
-  warmupSeconds = 0.5, // ramp-in to avoid launch burst
-  maxSpeedFactor = 1.3, // cap at baseSpeed * Hpx * this factor
-  minSpeedFactor = 0.22, // never go below this fraction of base speed
+  spawnMode = "pageTop",
+  spawnHeightPx = 600,
+  spawnSpacing = 1.5,
+  warmupSeconds = 0.5,
+  maxSpeedFactor = 1.3,
+  minSpeedFactor = 0.22,
   imgSrc = "/assets/bubble.png",
-  imgOpacity = 0.7, // <<< NEW
+  imgOpacity = 0.7,
 }) {
   const { viewport } = useThree();
   const Wpx = window.innerWidth;
@@ -144,7 +143,6 @@ function BlobsController({
     [radiusWorlds, pxPerWorldY]
   );
 
-  // Evenly-spread spawn near top band (no overlaps, blue-noise-ish)
   useEffect(() => {
     if (!pageHeightPx || radiiPx.length !== count) return;
 
@@ -352,7 +350,6 @@ function BlobsController({
       }
     }
 
-    // Map PAGE px → world coords (fixed viewport slice)
     for (let i = 0; i < count; i++) {
       const { width, height } = viewport;
       const gx = (pos.current[i].x / Wpx - 0.5) * width;
@@ -370,7 +367,7 @@ function BlobsController({
           ref={ref}
           radiusWorld={radiusWorlds[i % radiusWorlds.length]}
           imgSrc={imgSrc}
-          imgOpacity={imgOpacity} // <<< pass opacity
+          imgOpacity={imgOpacity}
           wobble={0.006}
           phase={phases[i]}
         />
@@ -394,7 +391,7 @@ export default function FloatingBlobsPastelCirclesPageWorld({
   maxSpeedFactor = 1.3,
   minSpeedFactor = 0.22,
   imgSrc = "/assets/bubble.png",
-  imgOpacity = 0.7, // <<< exposed
+  imgOpacity = 0.7,
 }) {
   const pageHeightPx = usePageHeight();
 
@@ -426,7 +423,7 @@ export default function FloatingBlobsPastelCirclesPageWorld({
         style={{ width: "100%", height: "100%", background: "transparent" }}
         onCreated={({ gl, scene }) => {
           scene.background = null;
-          gl.setClearColor(0x000000, 0); // keep canvas transparent
+          gl.setClearColor(0x000000, 0);
         }}
       >
         <Suspense fallback={null}>
@@ -445,7 +442,7 @@ export default function FloatingBlobsPastelCirclesPageWorld({
             maxSpeedFactor={maxSpeedFactor}
             minSpeedFactor={minSpeedFactor}
             imgSrc={imgSrc}
-            imgOpacity={imgOpacity} // <<< pass opacity down
+            imgOpacity={imgOpacity}
           />
         </Suspense>
       </Canvas>
